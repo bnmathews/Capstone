@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.params=floors\ rooms
+comment0.target=Tower(int,\ int)
+comment1.params=
+comment1.target=void\ makeNewColor()
+comment2.params=numFloors\ numRooms
+comment2.target=Room[][]\ makeFloors(int,\ int)
+comment3.params=
+comment3.target=void\ extendFloors()
+comment4.params=roomToInsert\ insertionPoint
+comment4.target=void\ insertRoom(Room,\ int)
+comment5.params=
+comment5.target=void\ displayFloors()
+comment6.params=page
+comment6.target=void\ paintComponent(java.awt.Graphics)
+comment7.params=page
+comment7.target=void\ drawBlock(java.awt.Graphics)
+numComments=8
