@@ -4,7 +4,7 @@ public class Elevator extends Room
     private String name;
     public Elevator()
     {
-        name = "e";
+        super("e");
     }
     
     public void constructElevator(Graphics page, int startX, int startY)

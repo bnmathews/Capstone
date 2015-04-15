@@ -42,23 +42,27 @@ public class Tower extends JPanel
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
+                /*
                 if (col % 2 == 0)
                 {
                     Room elevator = new Elevator();
-                    insertRoom(elevator,col);
+                    insertRoom(elevator,1);
                     System.out.println("Elevator added");
                 }
                 else
                 {
                     rooms[row][col] = new Room();
                 }
+                */
+                rooms[row][col] = new Room();
             }
         }
-        
+        Room elevator = new Elevator();
+        insertRoom(elevator,1);
         return rooms;
     }
     
-    public void extendFloors()
+    public void extendFloors() //may or may not be needed
     {
         Room[][] newRooms = new Room[rooms.length][rooms[1].length+1];
         for (int row = 0; row < rooms.length; row++)
@@ -73,23 +77,72 @@ public class Tower extends JPanel
     
     public void insertRoom(Room roomToInsert, int insertionPoint)
     {
-        extendFloors(); // should create an null Room at the end of the 2d array
-            for (int row = 0; row < rooms.length; row++)
+        System.out.println("Rooms width: " + rooms[1].length);
+        Room[][] firstHalf = new Room[rooms.length][insertionPoint+1];
+        System.out.println("First half width: " + firstHalf[1].length);
+        Room[][] secondHalf = new Room[rooms.length][rooms[1].length - (firstHalf[1].length-1)];
+        System.out.println("Second half width: " + secondHalf[1].length);
+        Room[][] newRoom = new Room[rooms.length][rooms[1].length + 1];
+        System.out.println("Final width: " + newRoom[1].length);
+        
+        for (int row = 0; row < firstHalf.length; row++)
+        {
+            for (int col = 0; col <= firstHalf[row].length-1; col++)
             {
-                for (int col = 0; col <= insertionPoint; col++)
+                if ( col == (firstHalf[1].length-1) )
                 {
-                    if (col == insertionPoint)
-                    {
-                        Room tempRoom = rooms[row][col];
-                        for(int c2 = insertionPoint; c2 < rooms[1].length; c2++)
-                        {
-                            tempRoom = rooms[row][c2];
-                            rooms[row][c2] = tempRoom;
-                        }
-                        rooms[row][col] = roomToInsert;
-                    }
+                    firstHalf[row][col] = roomToInsert;
+                }
+                else
+                {
+                    firstHalf[row][col] = rooms[row][col];
                 }
             }
+        }
+        
+        for (int row = 0; row < secondHalf.length; row++)
+        {
+            for (int col = 0; col < secondHalf[row].length; col++)
+            {
+                secondHalf[row][col] = rooms[row][col];
+            }
+        }
+        
+        for (int row = 0; row < firstHalf.length; row++)
+        {
+            for (int col = 0; col < (firstHalf[row].length + secondHalf[row].length) - 1; col++)
+            {
+                if (col < firstHalf[row].length)
+                {
+                    if (firstHalf[row][col] != null)
+                    {
+                        newRoom[row][col] = firstHalf[row][col];
+                    }
+                }   
+                else
+                {
+                   if (secondHalf[row][col] != null)
+                    {
+                        newRoom[row][col] = secondHalf[row][col];
+                    } 
+                }
+            }
+        }
+
+        System.out.println("Final Array:");
+        for (int row = 0; row < newRoom.length; row++)
+        {
+            for (int col = 0; col < newRoom[row].length; col++)
+            {
+                if (newRoom[row][col] != null)
+                {
+                    System.out.print(newRoom[row][col].getName());
+                }
+                else
+                    System.out.print("n");
+            }
+            System.out.println();
+        }
     }
     
     public void displayFloors()
