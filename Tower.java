@@ -45,7 +45,7 @@ public class Tower extends JPanel
                 if (col % 2 == 0)
                 {
                     Room elevator = new Elevator();
-                    insertRoom(elevator,col);
+                    insertRoom(elevator,col,row);
                     System.out.println("Elevator added");
                 }
                 else
@@ -73,7 +73,7 @@ public class Tower extends JPanel
         rooms = newRooms;
     }
     
-    public void insertRoom(Room roomToInsert, int insertionPoint) //not for adding rooms, as such it will only be able
+    public void insertRoom(Room roomToInsert, int insertionPoint, int insertion2) //not for adding rooms, as such it will only be able
                                                                   //to splice a room into the current array, no more
     {
         System.out.println("Rooms width: " + rooms[1].length);
