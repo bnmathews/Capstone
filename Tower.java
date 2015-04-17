@@ -42,23 +42,21 @@ public class Tower extends JPanel
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
-                /*
                 if (col % 2 == 0)
                 {
                     Room elevator = new Elevator();
-                    insertRoom(elevator,1);
+                    insertRoom(elevator,col);
                     System.out.println("Elevator added");
                 }
                 else
                 {
                     rooms[row][col] = new Room();
                 }
-                */
                 rooms[row][col] = new Room();
             }
         }
-        Room elevator = new Elevator();
-        insertRoom(elevator,1);
+        //Room elevator = new Elevator();
+        //insertRoom(elevator,2);
         return rooms;
     }
     
@@ -75,23 +73,26 @@ public class Tower extends JPanel
         rooms = newRooms;
     }
     
-    public void insertRoom(Room roomToInsert, int insertionPoint)
+    public void insertRoom(Room roomToInsert, int insertionPoint) //not for adding rooms, as such it will only be able
+                                                                  //to splice a room into the current array, no more
     {
         System.out.println("Rooms width: " + rooms[1].length);
         
         Room[][] firstHalf = new Room[rooms.length][insertionPoint+1];
         System.out.println("First half width: " + firstHalf[1].length);
         
+        
         Room[][] secondHalf = new Room[rooms.length][rooms[1].length - (firstHalf[1].length-1)];
         System.out.println("Second half width: " + secondHalf[1].length);
         
-        Room[][] newRoom = new Room[rooms.length][rooms[1].length + 1];
-        System.out.println("Final width: " + newRoom[1].length);
+        Room[][] newRooms = new Room[rooms.length][rooms[1].length + 1];
+        System.out.println("Final width: " + newRooms[1].length);
         
         int pos = 0;
         
         for (int row = 0; row < firstHalf.length; row++)
         {
+            pos = 0;
             for (int col = 0; col <= firstHalf[row].length-1; col++)
             {
                 if ( col == (firstHalf[1].length-1) )
@@ -103,31 +104,48 @@ public class Tower extends JPanel
                     firstHalf[row][col] = rooms[row][col];
                     pos++; //increment here to keep track of the position in 'rooms'
                 }
-                System.out.println("pos:" + pos);
             }
         }
         
+        System.out.println("Current position in rooms is: " + pos);
+        
+        for (int row = 0; row < secondHalf.length; row++)
+        {
+            int col2 = 0;
+            for (int col = pos; col < rooms[row].length; col++)
+            {
+                secondHalf[row][col2] = rooms[row][col];
+                col2++;
+            }
+        }
+        
+        System.out.println("Second Half Array:");
         for (int row = 0; row < secondHalf.length; row++)
         {
             for (int col = 0; col < secondHalf[row].length; col++)
             {
-                secondHalf[row][col] = rooms[row][pos];
-                pos++;
+                if (secondHalf[row][col] != null)
+                {
+                    System.out.print(secondHalf[row][col].getName());
+                }
+                else
+                    System.out.print("n");
             }
+            System.out.println();
         }
         
         for (int row = 0; row < firstHalf.length; row++)
         {
-            pos = 0; //this variable makes sure we start from the beginning of the second array, rather than
+             pos = 0; //this variable makes sure we start from the beginning of the second array, rather than
                      //just using the current column value, which would likely be greater than the length of
                      //a column in the second array
-            for (int col = 0; col < (firstHalf[row].length + secondHalf[row].length) - 1; col++)
+            for (int col = 0; col < newRooms[row].length; col++)
             {
                 if (col < firstHalf[row].length)
                 {
-                    if (firstHalf[row][pos] != null)
+                    if (firstHalf[row][col] != null)
                     {
-                        newRoom[row][pos] = firstHalf[row][pos];
+                        newRooms[row][pos] = firstHalf[row][pos];
                         pos++;
                     }
                 }   
@@ -136,21 +154,22 @@ public class Tower extends JPanel
                    pos = 0;
                    if (secondHalf[row][pos] != null)
                     {
-                        newRoom[row][pos] = secondHalf[row][pos];
+                        newRooms[row][col] = secondHalf[row][pos];
                         pos++;
                     } 
                 }
             }
         }
-
-        System.out.println("Final Array:");
-        for (int row = 0; row < newRoom.length; row++)
+        
+        System.out.println("Final Room Array:");
+        
+        for (int row = 0; row < newRooms.length; row++)
         {
-            for (int col = 0; col < newRoom[row].length; col++)
+            for (int col = 0; col < newRooms[row].length; col++)
             {
-                if (newRoom[row][col] != null)
+                if (newRooms[row][col] != null)
                 {
-                    System.out.print(newRoom[row][col].getName());
+                    System.out.print(newRooms[row][col].getName());
                 }
                 else
                     System.out.print("n");
@@ -158,7 +177,7 @@ public class Tower extends JPanel
             System.out.println();
         }
         
-        rooms = newRoom;
+        rooms = newRooms;
     }
     
     public void displayFloors()
