@@ -78,17 +78,12 @@ public class Tower extends JPanel
     public void insertRoom(Room roomToInsert, int insertionPoint)
     {
         System.out.println("Rooms width: " + rooms[1].length);
-        
         Room[][] firstHalf = new Room[rooms.length][insertionPoint+1];
         System.out.println("First half width: " + firstHalf[1].length);
-        
         Room[][] secondHalf = new Room[rooms.length][rooms[1].length - (firstHalf[1].length-1)];
         System.out.println("Second half width: " + secondHalf[1].length);
-        
         Room[][] newRoom = new Room[rooms.length][rooms[1].length + 1];
         System.out.println("Final width: " + newRoom[1].length);
-        
-        int pos = 0;
         
         for (int row = 0; row < firstHalf.length; row++)
         {
@@ -101,9 +96,7 @@ public class Tower extends JPanel
                 else
                 {
                     firstHalf[row][col] = rooms[row][col];
-                    pos++; //increment here to keep track of the position in 'rooms'
                 }
-                System.out.println("pos:" + pos);
             }
         }
         
@@ -111,33 +104,26 @@ public class Tower extends JPanel
         {
             for (int col = 0; col < secondHalf[row].length; col++)
             {
-                secondHalf[row][col] = rooms[row][pos];
-                pos++;
+                secondHalf[row][col] = rooms[row][col];
             }
         }
         
         for (int row = 0; row < firstHalf.length; row++)
         {
-            pos = 0; //this variable makes sure we start from the beginning of the second array, rather than
-                     //just using the current column value, which would likely be greater than the length of
-                     //a column in the second array
             for (int col = 0; col < (firstHalf[row].length + secondHalf[row].length) - 1; col++)
             {
                 if (col < firstHalf[row].length)
                 {
-                    if (firstHalf[row][pos] != null)
+                    if (firstHalf[row][col] != null)
                     {
-                        newRoom[row][pos] = firstHalf[row][pos];
-                        pos++;
+                        newRoom[row][col] = firstHalf[row][col];
                     }
                 }   
                 else
                 {
-                   pos = 0;
-                   if (secondHalf[row][pos] != null)
+                   if (secondHalf[row][col] != null)
                     {
-                        newRoom[row][pos] = secondHalf[row][pos];
-                        pos++;
+                        newRoom[row][col] = secondHalf[row][col];
                     } 
                 }
             }
@@ -157,8 +143,6 @@ public class Tower extends JPanel
             }
             System.out.println();
         }
-        
-        rooms = newRoom;
     }
     
     public void displayFloors()
@@ -188,24 +172,37 @@ public class Tower extends JPanel
     
     public void drawBlock(Graphics page)
     {
-        int nextX = 0;
-        int nextY = 0;
-        //System.out.println("Current Floor Plan:");
-        //displayFloors();
+        int increase = 0;
+        int heightIncrease = 0;
+        System.out.println("Current Floor Plan:");
+        displayFloors();
         for (int row = 0; row < rooms.length; row++)
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
-                if (rooms[row][col] != null)
+                /*
+                if (col % 2 == 0)
                 {
-                    rooms[row][col].constructRoom(page,20,20,nextX,nextY);
-                    nextX+=rooms[row][col].getWidth(); // go right as wide as the last drawn room was
+                    extendFloors();
+                    Room elevator = new Elevator();
+                    insertRoom(elevator,col);
+                    System.out.println("Elevator added");
                 }
+                */
+                //else
+                //{
+                    if (rooms[row][col] != null)
+                    {
+                        rooms[row][col].constructRoom(page,increase,heightIncrease);
+                        increase+=30;
+                    }
+                    
+                //}
             }
-            nextX = 0;
-            nextY+=rooms[row][1].getHeight(); // go up another block
+            increase = 0;
+            heightIncrease+=30;
         }
-        //System.out.println("Updated Floor Plan:");
-        //displayFloors();
+        System.out.println("Updated Floor Plan:");
+        displayFloors();
     }
 }
