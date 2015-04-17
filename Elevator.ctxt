@@ -1,6 +1,4 @@
 #BlueJ class context
 comment0.params=
 comment0.target=Elevator()
-comment1.params=page\ startX\ startY
-comment1.target=void\ constructElevator(java.awt.Graphics,\ int,\ int)
-numComments=2
+numComments=1
