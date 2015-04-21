@@ -31,7 +31,7 @@ public class Viewer
         panel = new JPanel();
         panel.setBackground(Color.black);
 
-        tower = new Tower(4,1);
+        tower = new Tower(2,2,150,300);
         
         // create the window itself
         frame = new JFrame();

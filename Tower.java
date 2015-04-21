@@ -16,12 +16,20 @@ public class Tower extends JPanel
 
     private int startingFloors;
     private int startingRooms;
+    
+    private int startingX;
+    private int startingY;
+    
     private Room[][] rooms;
 
-    public Tower(int floors,int rooms)
+    public Tower(int floors,int rooms, int x, int y)
     {
         startingFloors = floors;
         startingRooms = rooms;
+        
+        startingX = x;
+        startingY = y;
+        
         setBackground(Color.black);
         makeFloors(floors,rooms);
     }
@@ -54,7 +62,7 @@ public class Tower extends JPanel
         {
             for (int col = 0; col < width; col++)
             {
-                if (col % 2 == 0) //for every other room, add an elevator
+                if (col % 2 != 0) //for every other room, add an elevator
                 {
                     Room elevator = new Elevator();
                     insertRoom(elevator,row,col);
@@ -146,7 +154,6 @@ public class Tower extends JPanel
     public void paintComponent (Graphics page)
     {
         super.paintComponent(page);
-        page.setColor (Color.white);
         drawBlock(page);
     }
 
@@ -154,22 +161,18 @@ public class Tower extends JPanel
     {
         int nextX = 0;
         int nextY = 0;
-        //System.out.println("Current Floor Plan:");
-        //displayFloors();
         for (int row = 0; row < rooms.length; row++)
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
                 if (rooms[row][col] != null)
                 {
-                    rooms[row][col].constructRoom(page,20,20,nextX,nextY);
+                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY); //draws the room
                     nextX+=rooms[row][col].getWidth(); // go right as wide as the last drawn room was
                 }
             }
             nextX = 0;
-            nextY+=rooms[row][1].getHeight(); // go up another block
+            nextY-=rooms[row][1].getHeight(); // go up another block
         }
-        //System.out.println("Updated Floor Plan:");
-        //displayFloors();
     }
 }
