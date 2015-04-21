@@ -31,11 +31,11 @@ public class Viewer
         panel = new JPanel();
         panel.setBackground(Color.black);
 
-        tower = new Tower(3,2);
+        tower = new Tower(4,1);
         
         // create the window itself
         frame = new JFrame();
-        frame.setTitle("Fractal Tree");
+        frame.setTitle("Not a Fractal Tree");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
         frame.add(panel);
