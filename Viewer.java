@@ -27,11 +27,18 @@ public class Viewer
     public Viewer()
     throws InterruptedException
     {
+        boolean keepGoing = true;
+        
         // create the master panel
         panel = new JPanel();
         panel.setBackground(Color.black);
-
-        tower = new Tower(2,2,150,300);
+        
+        int b = (int)(Math.random() * 3);
+        
+        if (b == 0)
+            b = 1;
+            
+        tower = new Tower(0,0,150,300,b);
         
         // create the window itself
         frame = new JFrame();
@@ -41,5 +48,13 @@ public class Viewer
         frame.add(panel);
         frame.add(tower);
         frame.setVisible(true);
+        
+        while (keepGoing == true)
+        {
+            tower.updateResidents();
+            tower.addResident(); //assuming there is a space open
+            frame.repaint();
+            Thread.sleep(150);
+        }
     }
 }

@@ -2,18 +2,22 @@ import java.awt.*;
 import java.util.Random;
 public class Room
 {
+    private String type;
     private String name;
-    private boolean isOccupied = true;
+    private Resident occupant;
+    private boolean isOccupied = false;
     private int width = 30;
     private int height = 30;
-    public Room()
-    {
-        name = "r";
-    }
-    
-    public Room(String n, int w, int h)
+    public Room(String n)
     {
         name = n;
+        type = "r";
+    }
+    
+    public Room(String n, String t, int w, int h)
+    {
+        name = n;
+        type = t;
         width = w;
         height = h;
     }
@@ -32,8 +36,7 @@ public class Room
     {
         if (isOccupied)
         {
-            Color c = new Color(155,125,0);
-            page.setColor(c);
+            page.setColor(occupant.getColor());
             page.fillRect (startingX+increase, startingY+heightIncrease, width, height);
         }
         
@@ -44,6 +47,25 @@ public class Room
         page.drawLine (startingX+increase, startingY+height+heightIncrease, startingX+width+increase, startingY+height+heightIncrease); //draw bottom line
     }
     
+    public void setOccupied(Resident r)
+    {
+        occupant = r;
+        if (r != null)
+            isOccupied = true;
+        else
+            isOccupied = false;
+    }
+    
+    public Resident getResident()
+    {
+        if (occupant != null)
+        {
+            return occupant;
+        }
+        else
+            return null;
+    }
+    
     public boolean getOccupation()
     {
         return isOccupied;
@@ -52,5 +74,10 @@ public class Room
     public String getName()
     {
         return name;
+    }
+    
+    public String getType()
+    {
+        return type;
     }
 }

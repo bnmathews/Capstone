@@ -1,4 +1,4 @@
 #BlueJ class context
-comment0.params=
-comment0.target=Elevator()
+comment0.params=n
+comment0.target=Elevator(java.lang.String)
 numComments=1

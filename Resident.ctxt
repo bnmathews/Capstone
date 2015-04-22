@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Resident()
+comment1.params=
+comment1.target=void\ makeColor()
+comment2.params=
+comment2.target=java.awt.Color\ getColor()
+comment3.params=
+comment3.target=void\ updateStayTime()
+comment4.params=
+comment4.target=void\ doAction()
+comment5.params=
+comment5.target=java.lang.String\ getName()
+comment6.params=
+comment6.target=int\ getStayTime()
+numComments=7

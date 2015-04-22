@@ -1,9 +1,9 @@
 import java.awt.*;
 public class Elevator extends Room
 {
-    private String name;
-    public Elevator()
+    private String type;
+    public Elevator(String n)
     {
-        super("e",20,30);
+        super(n,"e",20,30);
     }
 }
