@@ -49,6 +49,7 @@ public class Tower extends JPanel
         
         setBackground(Color.black);
         makeFloors(startingFloors,startingRooms);
+        System.out.println("The nearest elevator to room 0 is at " + getNearestElevator(1, 1)[0] + getNearestElevator(1, 1)[1]);
         displayResidents();
     }
     
@@ -66,7 +67,8 @@ public class Tower extends JPanel
                     {
                         if (residentAdded == false)
                         {
-                            rooms[row][col].setOccupied(r);
+                            rooms[row][col].setResident(r);
+                            rooms[row][col].setOccupied(true);
                             residentAdded = true;
                             
                             System.out.println(r.getName() 
@@ -103,6 +105,28 @@ public class Tower extends JPanel
         }
     }
     
+    public int[] getNearestElevator(int r, int c)
+    {
+        boolean elevatorFound = false;
+        int[] loc = new int[2];
+        for (int row = r; row < rooms.length; row++) 
+        {
+            for (int col = c; col < rooms[row].length; col++)
+            {
+                if (rooms[row][col] != null && rooms[row][col].getType().equals("e"))
+                {
+                    if (!elevatorFound) //if an elevator is found, return its coordinates in the room array
+                    {
+                        loc[0] = row;
+                        loc[1] = col;
+                        elevatorFound = true;
+                    }
+                }
+            }
+        }
+        return loc;
+    }
+    
     public void updateResidents() //make the residents perform actions
     {
         for (int row = 0; row < rooms.length; row++) 
@@ -115,11 +139,21 @@ public class Tower extends JPanel
                     Resident currentResident = currentRoom.getResident();
                     if (!currentRoom.getType().equals("e") && currentResident != null)
                     {
-                        currentResident.doAction();
+                        if (currentResident.doAction().equals("nothing"))
+                        {
+                            System.out.println(currentResident.getName() + " is hanging out in their room.");
+                        }
+                        else if (currentResident.doAction().equals("work"))
+                        {
+                            currentRoom.setOccupied(false);
+                            System.out.println(currentResident.getName() + " is going to work.");
+                        }
+                        
                         if (currentResident.getStayTime() < 1)
                         {
                             System.out.println(currentResident.getName() + " has moved out!");
-                            currentRoom.setOccupied(null); //the resident leaves
+                            currentRoom.setResident(null); //the resident is no longer tied to that room
+                            currentRoom.setOccupied(false); //no one is in the room
                         }
                     }
                 }

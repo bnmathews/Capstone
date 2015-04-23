@@ -8,9 +8,4 @@ public class Elevator extends Room
     {
         super(n,"e",20,30);
     }
-    
-    public void addOccupant(Resident r)
-    {
-        occupants.add(r);
-    }
 }
