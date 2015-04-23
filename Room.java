@@ -32,13 +32,10 @@ public class Room
         return height;
     }
     
-    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease)
+    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease, Color roomColor)
     {
-        if (isOccupied)
-        {
-            page.setColor(resident.getColor());
-            page.fillRect (startingX+increase, startingY+heightIncrease, width, height);
-        }
+        page.setColor(roomColor);
+        page.fillRect (startingX+increase, startingY+heightIncrease, width, height);
         
         page.setColor(Color.white);
         page.drawLine (startingX+increase, startingY+heightIncrease, startingX+width+increase, startingY+heightIncrease); //draw top line

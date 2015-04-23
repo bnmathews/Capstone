@@ -7,10 +7,42 @@ public class Elevator extends Room
     public Elevator(String n)
     {
         super(n,"e",20,30);
+        occupants = new ArrayList<Resident>();
     }
     
     public void addOccupant(Resident r)
     {
+        System.out.println(r.getName() + " is on the elevator!");
         occupants.add(r);
+        setOccupied(true);
+    }
+    
+    public ArrayList<Resident> getAllOccupants()
+    {
+        return occupants;
+    }
+    
+    public Resident getResident()
+    {
+        if (getOccupation() == true)
+        {
+            return occupants.get(0);
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    public void transferElevators(Elevator e)
+    {
+        for (Resident r : occupants)
+        {
+            e.addOccupant(r);
+        }
+        for (int i = 0; i < occupants.size(); i++)
+        {
+            occupants.set(i, null); //remove the current guest from the elevator
+        }
     }
 }

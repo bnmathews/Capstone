@@ -49,7 +49,8 @@ public class Tower extends JPanel
         
         setBackground(Color.black);
         makeFloors(startingFloors,startingRooms);
-        System.out.println("The nearest elevator to room 0 is at " + getNearestElevator(1, 1)[0] + getNearestElevator(1, 1)[1]);
+        addResident();
+        System.out.println("The nearest elevator to room 0,2 is at " + getNearestElevator(0, 2)[0] + "," + getNearestElevator(0, 2)[1]);
         displayResidents();
     }
     
@@ -108,7 +109,7 @@ public class Tower extends JPanel
     public int[] getNearestElevator(int r, int c)
     {
         boolean elevatorFound = false;
-        int[] loc = new int[2];
+        int[] loc = new int[2]; //first position is the elevator's row, the second is the column
         for (int row = r; row < rooms.length; row++) 
         {
             for (int col = c; col < rooms[row].length; col++)
@@ -145,8 +146,13 @@ public class Tower extends JPanel
                         }
                         else if (currentResident.doAction().equals("work"))
                         {
+                            int[] elevatorPos = getNearestElevator(row,col);
+                            Room currentElevatorRoom = rooms[elevatorPos[0]][elevatorPos[1]];
+                            Elevator currentElevator = (Elevator)(currentElevatorRoom);
                             currentRoom.setOccupied(false);
                             System.out.println(currentResident.getName() + " is going to work.");
+                            System.out.println("The nearest elevator the room is" + getNearestElevator(row, col)[0] + "," + getNearestElevator(row, col)[1]);
+                            currentElevator.addOccupant(currentResident); //find the most convenient elevator to the current room
                         }
                         
                         if (currentResident.getStayTime() < 1)
@@ -280,7 +286,17 @@ public class Tower extends JPanel
             {
                 if (rooms[row][col] != null) //only make the elevators if there is more than one floor
                 {
-                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY); //draws the room
+                    Color currColor = new Color(155,155,155);
+                    if (rooms[row][col].getType().equals("e"))
+                    {
+                        currColor = new Color(100,100,100);
+                    }
+                    
+                    if (rooms[row][col].getResident() != null)
+                    {
+                        currColor = rooms[row][col].getResident().getColor();
+                    }
+                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY,currColor); //draws the room
                     nextX+=rooms[row][col].getWidth(); // go right as wide as the last drawn room was
                 }
             }
