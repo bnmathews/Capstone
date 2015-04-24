@@ -38,7 +38,7 @@ public class Viewer
         if (b == 0)
             b = 1;
             
-        tower = new Tower(0,0,150,300,2);
+        tower = new Tower(0,0,150,300,3);
         
         // create the window itself
         frame = new JFrame();
@@ -51,10 +51,11 @@ public class Viewer
         
         while (keepGoing == true)
         {
+            tower.moveElevators();
             tower.updateResidents();
-            //tower.addResident(); //assuming there is a space open
+            tower.addResident(); //assuming there is a space open
             frame.repaint();
-            Thread.sleep(150);
+            Thread.sleep(300);
         }
     }
 }

@@ -4,6 +4,8 @@ public class Resident
 {
     private int money;
     private int timeToStay;
+    private boolean isOut = false;
+    private boolean isOnElevator = false;
     private Color color;
     private String name;
     private String gender;
@@ -40,7 +42,7 @@ public class Resident
     
     public void updateStayTime()
     {
-        if (timeToStay > 0)
+        if (timeToStay > 0 && isOut == false)
         {
             timeToStay--;
         }
@@ -49,14 +51,25 @@ public class Resident
     public String doAction()
     {
         updateStayTime();
-        if (Math.random()*3 > 2)
+        if (Math.random()*5 > 2)
         {
             return "nothing";
         }
         else
         {
+            isOut = true;
             return "work";
         }
+    }
+    
+    public void setOnElevator(boolean b)
+    {
+        isOnElevator = b;
+    }
+    
+    public boolean getOnElevator()
+    {
+        return isOnElevator;
     }
     
     public String getName()
@@ -67,5 +80,10 @@ public class Resident
     public int getStayTime()
     {
         return timeToStay;
+    }
+    
+    public boolean getIsOut()
+    {
+        return isOut;
     }
 }

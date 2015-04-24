@@ -12,12 +12,12 @@ public class Elevator extends Room
     
     public void addOccupant(Resident r)
     {
-        System.out.println(r.getName() + " is on the elevator!");
+        //System.out.println(r.getName() + " is on the elevator!");
         occupants.add(r);
         setOccupied(true);
     }
     
-    public ArrayList<Resident> getAllOccupants()
+    public ArrayList<Resident> getAllResidents()
     {
         return occupants;
     }
@@ -34,15 +34,21 @@ public class Elevator extends Room
         }
     }
     
+    public void removeAllResidents()
+    {
+        for (int i = 0; i < occupants.size(); i++)
+        {
+            occupants.set(i, null); //remove the current guest from the elevator
+        }
+        setOccupied(false);
+    }
+    
     public void transferElevators(Elevator e)
     {
         for (Resident r : occupants)
         {
             e.addOccupant(r);
         }
-        for (int i = 0; i < occupants.size(); i++)
-        {
-            occupants.set(i, null); //remove the current guest from the elevator
-        }
+        removeAllResidents();
     }
 }
