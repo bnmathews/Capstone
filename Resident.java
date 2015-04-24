@@ -57,7 +57,6 @@ public class Resident
         }
         else
         {
-            isOut = true;
             return "work";
         }
     }
@@ -65,6 +64,10 @@ public class Resident
     public void setOnElevator(boolean b)
     {
         isOnElevator = b;
+        if (b == true)
+        {
+            isOut = true;
+        }
     }
     
     public boolean getOnElevator()
