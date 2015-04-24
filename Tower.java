@@ -172,19 +172,28 @@ public class Tower extends JPanel
         }
     }
     
+    public void getAwayResidents()
+    {
+        System.out.print("Away Residents: ");
+        for (Resident r : awayResidents)
+        {
+            System.out.println(r.getName());
+        }
+    }
+    
     public void moveElevators() //check if an elevator is moving on a column, otherwise look at others
     {
         boolean found = false;
-        for (int row = rooms.length-1; row >= 0; row--)
+        for (int row = 0; row < rooms.length; row++)
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
                 if (rooms[row][col] != null && rooms[row][col].getType().equals("e"))
                 {
-                    found = true;
                     Elevator currentElevator = (Elevator) (rooms[row][col]);
-                    if (rooms[row][col].getResident() != null)
+                    if (currentElevator.getResident() != null)
                     {
+                        found = true;
                         if (row != 0)
                         {
                             Elevator nextElevator = (Elevator) (rooms[row-1][col]);
@@ -192,6 +201,7 @@ public class Tower extends JPanel
                         }
                         else
                         {
+                            System.out.println("Flushing residents");
                             for (Resident r : currentElevator.getAllResidents())
                                 {
                                     awayResidents.add(r); //the residents are leaving the elevator, and leaving the building.
@@ -221,7 +231,7 @@ public class Tower extends JPanel
                         {
                             if (currentResident.doAction().equals("nothing"))
                             {
-                                System.out.println(currentResident.getName() + " is hanging out in their room.");
+                                //System.out.println(currentResident.getName() + " is hanging out in their room.");
                             }
                             else if (currentResident.doAction().equals("work"))
                             {
@@ -230,7 +240,7 @@ public class Tower extends JPanel
                                     Elevator currentElevator = (Elevator)(currentElevatorRoom);
                                     currentResident.setOnElevator(true);
                                     currentElevator.addOccupant(currentResident); 
-                                    System.out.println(currentResident.getName() + " is going to work.");
+                                    //System.out.println(currentResident.getName() + " is going to work.");
                                     //controlElevator();
                                 }
                             }

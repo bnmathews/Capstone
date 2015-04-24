@@ -49,6 +49,6 @@ public class Elevator extends Room
         {
             e.addOccupant(r);
         }
-        removeAllResidents();
+        this.removeAllResidents();
     }
 }

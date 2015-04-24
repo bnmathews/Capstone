@@ -54,6 +54,7 @@ public class Viewer
             tower.moveElevators();
             tower.updateResidents();
             tower.addResident(); //assuming there is a space open
+            //tower.getAwayResidents();
             frame.repaint();
             Thread.sleep(300);
         }
