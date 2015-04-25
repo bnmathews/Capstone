@@ -145,7 +145,7 @@ public class Tower extends JPanel
             System.out.println(r.getName());
         }
     }
-    
+
     public boolean checkElevator( int col)
     {
         boolean open = true;
@@ -170,19 +170,17 @@ public class Tower extends JPanel
             {
                 if (rooms[row][col] != null && rooms[row][col].getType().equals("e") && found == false)
                 {
-                    Elevator currentElevator = (Elevator) (rooms[row][col]);
-                    if (currentElevator.getResident() != null)
+                    Elevator currentElevator = (Elevator)(rooms[row][col]);
+                    if (currentElevator.getOccupation() == true)
                     {
                         found = true;
                         if (row != 0)
                         {
                             Elevator nextElevator = (Elevator) (rooms[row-1][col]);
-                            System.out.println("Next elevator is at: " + (row-1));
                             currentElevator.transferElevators(nextElevator);
                         }
                         else
                         {
-                            System.out.println("Flushing residents");
                             for (Resident r : currentElevator.getAllResidents())
                             {
                                 awayResidents.add(r); //the residents are leaving the elevator, and leaving the building.
@@ -203,7 +201,7 @@ public class Tower extends JPanel
             for (int col = 0; col < rooms[row].length; col++)
             {
                 Room currentRoom = rooms[row][col];
-                if (currentRoom != null && !currentRoom.getType().equals("e") )
+                if (currentRoom != null && !currentRoom.getType().equals("e"))
                 {
                     Resident currentResident = currentRoom.getResident();
                     if (currentResident != null)
@@ -216,17 +214,11 @@ public class Tower extends JPanel
                             }
                             else if (currentResident.doAction().equals("work"))
                             {
-                                {
-                                    if (checkElevator(row) == true) //if no one is on the elevator
-                                    {
-                                        Room currentElevatorRoom = rooms[getNearestElevator(row,col)[0]][getNearestElevator(row,col)[1]]; //find the most convenient elevator to the current room
-                                        Elevator currentElevator = (Elevator)(currentElevatorRoom);
-                                        currentResident.setOnElevator(true);
-                                        currentElevator.addOccupant(currentResident); 
-                                        //System.out.println(currentResident.getName() + " is going to work.");
-                                        //controlElevator();
-                                    }
-                                }
+                                Room currentElevatorRoom = rooms[getNearestElevator(row,col)[0]][getNearestElevator(row,col)[1]]; //find the most convenient elevator to the current room
+                                Elevator currentElevator = (Elevator)(currentElevatorRoom);
+                                currentResident.setOnElevator(true);
+                                currentElevator.addOccupant(currentResident); 
+                                //System.out.println(currentResident.getName() + " is going to work.");
                             }
 
                             if (currentResident.getStayTime() < 1)
@@ -359,29 +351,9 @@ public class Tower extends JPanel
         {
             for (int col = 0; col < rooms[row].length; col++)
             {
-                if (rooms[row][col] != null) //only make the elevators if there is more than one floor
+                if (rooms[row][col] != null)
                 {
-                    Color roomColor = new Color(155,155,155);
-                    if (rooms[row][col].getType().equals("e"))
-                    {
-                        roomColor = new Color(100,100,100);
-                    }
-
-                    if (rooms[row][col].getResident() != null)
-                    {
-                        if (rooms[row][col].getResident().getIsOut() == false)
-                        {
-                            roomColor = rooms[row][col].getResident().getColor();
-                        }
-                        else
-                        {
-                            if (rooms[row][col].getType().equals("e"))
-                                roomColor = rooms[row][col].getResident().getColor();  //dim the lights a little
-                            else
-                                roomColor = rooms[row][col].getResident().getColor().darker(); //the elevators always stay the same person color, never darker or lighter
-                        }
-                    }
-                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY,roomColor); //draws the room
+                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY); //draws the room
                     nextX+=rooms[row][col].getWidth(); // go right as wide as the last drawn room was
                 }
             }

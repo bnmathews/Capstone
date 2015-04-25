@@ -4,6 +4,8 @@ public class Room
 {
     private String type;
     private String name;
+    private Color myColor = new Color(155,155,155);
+    private Color defaultColor = new Color(155,155,155);
     private Resident resident;
     private boolean isOccupied = false;
     private int width = 30;
@@ -22,6 +24,11 @@ public class Room
         height = h;
     }
     
+    public void setMyColor(Color c)
+    {
+        myColor = c;
+    }
+    
     public int getWidth()
     {
         return width;
@@ -32,9 +39,9 @@ public class Room
         return height;
     }
     
-    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease, Color roomColor)
+    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease)
     {
-        page.setColor(roomColor);
+        page.setColor(myColor);
         page.fillRect (startingX+increase, startingY+heightIncrease, width, height);
         
         page.setColor(Color.white);
@@ -47,6 +54,18 @@ public class Room
     public void setOccupied(boolean o)
     {
         isOccupied = o;
+        if (!type.equals("e"))
+            if (resident != null)
+            {
+                if (o == false)
+                    setMyColor(resident.getColor().darker());
+                else
+                    setMyColor(resident.getColor());
+            }
+            else
+            {
+                setMyColor(defaultColor);
+            }
     }
     
     public void setResident(Resident r)
