@@ -4,13 +4,22 @@ public class Resident
 {
     private int money;
     private int timeToStay;
+    
+    private int minTimeOut;
+    private int maxTimeOut;
+    
+    private int[] roomLocation;
+    
+    private int timeOut = 0; //the time to spend out of the building
+    
     private boolean isOut = false;
+    private boolean isOnElevator = false;
     private Color color;
     private String name;
     private String gender;
     private String[] namePrefix = {"Apple","Bil","Kick","Head","Work","Shell","Rod","Care","Hipp","Flipp","Still","Tru","Happ","Fell","Fist"};
     private String[] nameSuffix = {"long","iam","worker","maker","breaker","age","man","mack","back","land","ings","-Bo","ins","-Millar","beef"};
-    public Resident()
+    public Resident(int minTimeOut, int maxTimeOut, int roomRow, int roomCol)
     {
         if ( (int) (Math.random() * 2) == 1)
             gender = "Mr. ";
@@ -25,7 +34,34 @@ public class Resident
         
         timeToStay = (int)(Math.random() * 30) + 1;
         
+        this.minTimeOut = minTimeOut;
+        this.maxTimeOut = maxTimeOut;
+        
+        roomLocation[0] = roomRow;
+        roomLocation[1] = roomCol;
+        
         makeColor();
+    }
+    
+    public int[] getRoomLocation()
+    {
+        return roomLocation;
+    }
+    
+    public void resetTimeOut()
+    {
+        Random r = new Random();
+        timeOut = r.nextInt((maxTimeOut - minTimeOut) + 1) + minTimeOut;
+    }
+    
+    public void decreaseTimeOut()
+    {
+        timeOut--;
+    }
+    
+    public int getTimeOut()
+    {
+        return timeOut;
     }
     
     public void makeColor()
@@ -50,22 +86,28 @@ public class Resident
     public String doAction()
     {
         updateStayTime();
-        if (!isOut)
+        if (Math.random()*5 > 2)
         {
-            if (Math.random()*5 > 2)
-            {
-                return "nothing";
-            }
-            else
-            {
-                isOut = true;
-                return "work";
-            }
+            return "nothing";
         }
         else
         {
             return "out";
         }
+    }
+    
+    public void setOnElevator(boolean b)
+    {
+        isOnElevator = b;
+        if (b == true)
+        {
+            isOut = true;
+        }
+    }
+    
+    public boolean getOnElevator()
+    {
+        return isOnElevator;
     }
     
     public String getName()

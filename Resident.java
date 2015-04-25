@@ -4,6 +4,14 @@ public class Resident
 {
     private int money;
     private int timeToStay;
+    
+    private int minTimeOut;
+    private int maxTimeOut;
+    
+    private int[] roomLocation = new int[2];
+    
+    private int timeOut = 0; //the time to spend out of the building
+    
     private boolean isOut = false;
     private boolean isOnElevator = false;
     private Color color;
@@ -11,7 +19,7 @@ public class Resident
     private String gender;
     private String[] namePrefix = {"Apple","Bil","Kick","Head","Work","Shell","Rod","Care","Hipp","Flipp","Still","Tru","Happ","Fell","Fist"};
     private String[] nameSuffix = {"long","iam","worker","maker","breaker","age","man","mack","back","land","ings","-Bo","ins","-Millar","beef"};
-    public Resident()
+    public Resident(int minTimeOut, int maxTimeOut, int roomRow, int roomCol)
     {
         if ( (int) (Math.random() * 2) == 1)
             gender = "Mr. ";
@@ -26,7 +34,34 @@ public class Resident
         
         timeToStay = (int)(Math.random() * 30) + 1;
         
+        this.minTimeOut = minTimeOut;
+        this.maxTimeOut = maxTimeOut;
+        
+        roomLocation[0] = roomRow;
+        roomLocation[1] = roomCol;
+        
         makeColor();
+    }
+    
+    public int[] getRoomLocation()
+    {
+        return roomLocation;
+    }
+    
+    public void resetTimeOut()
+    {
+        Random r = new Random();
+        timeOut = r.nextInt((maxTimeOut - minTimeOut) + 1) + minTimeOut;
+    }
+    
+    public void decreaseTimeOut()
+    {
+        timeOut--;
+    }
+    
+    public int getTimeOut()
+    {
+        return timeOut;
     }
     
     public void makeColor()
@@ -57,7 +92,7 @@ public class Resident
         }
         else
         {
-            return "work";
+            return "out";
         }
     }
     
