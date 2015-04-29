@@ -85,8 +85,7 @@ public class Resident
     
     public String doAction()
     {
-        updateStayTime();
-        if (Math.random()*5 > 2)
+        if (Math.random()*13 > 2)
         {
             return "nothing";
         }
