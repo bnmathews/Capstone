@@ -67,6 +67,6 @@ public class Elevator extends Room
     
     public boolean getMovingUp()
     {
-        return movinUp;
+        return movingUp;
     }
 }

@@ -46,7 +46,7 @@ public class Elevator extends Room
         setColor(defaultColor);
         for (int i = 0; i < occupants.size(); i++)
         {
-            occupants.set(i, null); //remove the current guest from the elevator
+            occupants.remove(i); //remove the current guest from the elevator
         }
         setOccupied(false);
     }
