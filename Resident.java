@@ -85,7 +85,8 @@ public class Resident
     
     public String doAction()
     {
-        if (Math.random()*13 > 2)
+        Double chance = Math.random() * 100; //decides what the resident will do
+        if (chance > 50)
         {
             return "nothing";
         }

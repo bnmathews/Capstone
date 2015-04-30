@@ -1,5 +1,5 @@
 import java.awt.*;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.util.Random; 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class Tower extends JPanel
     // the dimensions of the Tree Panel
     private final int PANEL_WIDTH = 1000;
     private final int PANEL_HEIGHT = 1000;
-    
+
     //resident variables
     private int res_minTimeOut;
     private int res_maxTimeOut;
@@ -33,17 +33,21 @@ public class Tower extends JPanel
 
     private int elevatorDelay = 3;
 
-    public Tower(int floors,int rooms, int x, int y,int b, int minT, int maxT)
+    private JFrame containingFrame;
+
+    public Tower(JFrame frame, int floors,int rooms, int x, int y,int b, int minT, int maxT)
     {
+        containingFrame = frame;
+
         res_minTimeOut = minT;
         res_maxTimeOut = maxT;
-        
+
         budget = b;
 
         if (budget >= 3)
         {
-            startingFloors = 7;
-            startingRooms = 2;
+            startingFloors = 3;
+            startingRooms = 3;
         }
         else if (budget>= 2)
         {
@@ -61,17 +65,17 @@ public class Tower extends JPanel
 
         setBackground(Color.black);
         makeFloors(startingFloors,startingRooms);
-        //addResident();
+        addResident();
         displayResidents();
     }
 
     public void addResident()
     {
         boolean residentAdded = false;
-        int row = (int)(Math.random() * rooms.length);
-        //int row = 2;
-        int col = (int)(Math.random() * rooms[0].length);
-        //int col = 0;
+        //int row = (int)(Math.random() * rooms.length);
+        int row = 2;
+        //int col = (int)(Math.random() * rooms[0].length);
+        int col = 0;
         if (rooms[row][col] != null)
         {
             if (rooms[row][col].getOccupation() == false && ( !rooms[row][col].getType().equals("e")))
@@ -103,13 +107,13 @@ public class Tower extends JPanel
                 {
                     if (!currentRoom.getType().equals("e") && currentRoom.getResident() != null)
                     {
-                        System.out.println(currentRoom.getResident().getName() 
-                            + " is staying in " + currentRoom.getName() + " for " 
-                            + currentRoom.getResident().getStayTime() + " days.");
+                        //System.out.println(currentRoom.getResident().getName() 
+                        //    + " is staying in " + currentRoom.getName() + " for " 
+                        //    + currentRoom.getResident().getStayTime() + " days.");
                     }
                     else if (!rooms[row][col].getType().equals("e"))
                     {
-                        System.out.println("Nobody is staying in " + rooms[row][col].getName());
+                        //System.out.println("Nobody is staying in " + rooms[row][col].getName());
                     }
                 }
             }
@@ -140,7 +144,7 @@ public class Tower extends JPanel
 
     public void getAwayResidents()
     {
-        System.out.print("Away Residents: ");
+        //System.out.print("Away Residents: ");
         for (Resident r : awayResidents)
         {
             System.out.println(r.getName());
@@ -159,6 +163,7 @@ public class Tower extends JPanel
                     open = false;
             }
         }
+        System.out.println(open);
         return open;
     }
 
@@ -189,7 +194,6 @@ public class Tower extends JPanel
                             for (Resident r : currentElevator.getAllResidents())
                             {
                                 awayResidents.add(r); //the residents are leaving the elevator, and leaving the building.
-                                r.setOnElevator(false);
                                 if (r != null)
                                 {
                                     r.resetTimeOut();
@@ -202,29 +206,44 @@ public class Tower extends JPanel
             }
         }
     }
-    
-    public void moveElevatorUp(Resident r, int maxRow, int col)
+
+    public void moveElevatorUp(Resident r, int row, int col)
     {
-        Elevator currentElevator = (Elevator)(rooms[0][col]);
-        //System.out.println("Attempting to move the elevator up...");
-        for (int row = 0; row < maxRow; row++)
+        Elevator currentElevator = (Elevator)(rooms[row][col]);
+        System.out.println("ROW: " + row);
+        if (row < rooms.length -1)
         {
-            currentElevator = (Elevator) (rooms[row][col]);
             if (currentElevator.getOccupation() == false)
             {
                 currentElevator.setMovingUp(true);
-                currentElevator.addOccupant(r); 
+                currentElevator.setColor(r.getColor());
                 Elevator nextElevator = (Elevator) (rooms[row+1][col]);
                 //System.out.println("Next elevator is @ " + (row+1));
+                nextElevator.setColor(r.getColor());
                 currentElevator.transferElevators(nextElevator);
                 currentElevator.setMovingUp(false);
             }
         }
-        currentElevator.removeAllResidents();
-        currentElevator.setMovingUp(false);
-        rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
-        //System.out.println(r.getName() + " is back.");
-        r.setOnElevator(false);
+        else if (row == 0)
+        {
+            if (currentElevator.getOccupation() == false)
+            {
+                currentElevator.setMovingUp(true);
+                currentElevator.addOccupant(r); 
+                currentElevator.setColor(r.getColor());
+                Elevator nextElevator = (Elevator) (rooms[row+1][col]);
+                nextElevator.setColor(r.getColor());
+                currentElevator.transferElevators(nextElevator);
+                currentElevator.setMovingUp(false);
+            }
+        }
+        else
+        {
+            currentElevator.removeAllResidents();
+            currentElevator.setMovingUp(false);
+            r.setOnElevator(false);
+            rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
+        }
     }
 
     public void updateResidents() //make the residents perform actions
@@ -253,10 +272,10 @@ public class Tower extends JPanel
                             {
                                 if (currentResident.doAction().equals("nothing"))
                                 {
-                                    //System.out.println(currentResident.getName() + " is hanging out in their room.");
+                                    System.out.println(currentResident.getName() + " is hanging out in their room.");
                                     currentResident.updateStayTime();
                                 }
-                                else if (currentResident.doAction().equals("out") && checkElevator(col) == true)
+                                else if (currentResident.doAction().equals("out") && checkElevator(col+1) == true)
                                 {
                                     Room currentElevatorRoom = rooms[getNearestElevator(row,col)[0]][getNearestElevator(row,col)[1]]; //find the most convenient elevator to the current room
                                     Elevator currentElevator = (Elevator)(currentElevatorRoom);
@@ -271,9 +290,9 @@ public class Tower extends JPanel
                 }
             }
         }
-        
+
         ArrayList<Resident> residentsToBringBack = new ArrayList<Resident>();
-        
+
         for (Resident r : awayResidents) //the people not in the building are going about their days
         {
             if (r != null) 
@@ -284,24 +303,29 @@ public class Tower extends JPanel
                 }
                 else
                 {
-                    rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
-                    //System.out.println(r.getName() + " is back.");
-                    r.setOnElevator(false);
-                    awayResidents.set(awayResidents.indexOf(r),null);
-                    residentsToBringBack.add(r);
-                    /*
+                    //rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
+                    System.out.println(r.getName() + " is back.");
+                    //r.setOnElevator(false);
+                    //awayResidents.set(awayResidents.indexOf(r),null);
+                    //residentsToBringBack.add(r);
+
                     System.out.println("Checking if the elevator is clear...");
                     if (checkElevator(r.getRoomLocation()[1] + 1) == true)
                     {
                         System.out.println("Elevator at " + (r.getRoomLocation()[1] + 1) + " is open."); //check the elevator rowcol to the right of the room
-                        moveElevatorUp(r,r.getRoomLocation()[0], (r.getRoomLocation()[1]) + 1 ); // the elevator will always be one to the right of the room
+                        for (int step = 0; step < rooms.length; step++) //move the elevator up one space for every floor
+                        {
+                            containingFrame.repaint();
+                            moveElevatorUp(r,step, (r.getRoomLocation()[1]) + 1 ); 
+                            Thread.sleep(300);
+                        }
                         awayResidents.set(awayResidents.indexOf(r),null);
+                        residentsToBringBack.add(r);
                     }
-                    */
                 }
             }
         }
-        
+
         for (Resident r : residentsToBringBack)
         {
             awayResidents.remove(r);
@@ -427,7 +451,7 @@ public class Tower extends JPanel
             {
                 if (rooms[row][col] != null)
                 {
-                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY); //draws the room
+                    rooms[row][col].constructRoom(page,startingX,startingY,nextX,nextY, this); //draws the room
                     nextX+=rooms[row][col].getWidth(); // go right as wide as the last drawn room was
                 }
             }

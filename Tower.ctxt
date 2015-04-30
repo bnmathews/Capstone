@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=floors\ rooms\ x\ y\ b\ minT\ maxT
-comment0.target=Tower(int,\ int,\ int,\ int,\ int,\ int,\ int)
+comment0.params=frame\ floors\ rooms\ x\ y\ b\ minT\ maxT
+comment0.target=Tower(javax.swing.JFrame,\ int,\ int,\ int,\ int,\ int,\ int,\ int)
 comment1.params=
 comment1.target=void\ addResident()
 comment10.params=
@@ -23,7 +23,7 @@ comment5.params=col
 comment5.target=boolean\ checkElevator(int)
 comment6.params=
 comment6.target=void\ moveElevatorDown()
-comment7.params=r\ maxRow\ col
+comment7.params=r\ row\ col
 comment7.target=void\ moveElevatorUp(Resident,\ int,\ int)
 comment8.params=
 comment8.target=void\ updateResidents()

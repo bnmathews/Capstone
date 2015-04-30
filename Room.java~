@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.Random;
+import javax.swing.JPanel;
 public class Room
 {
     private String type;
@@ -38,11 +39,19 @@ public class Room
         return height;
     }
 
-    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease)
+    public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease, JPanel panel)
     {
+        int panelWidth = (int)(panel.getWidth() / 7.5);
+        int panelHeight = (int)(panel.getHeight() / 7.5);
+        
+        width = panelWidth - width;
+        height = panelHeight;
+        
+        //draw the room
         page.setColor(myColor);
         page.fillRect (startingX+increase, startingY+heightIncrease, width, height);
 
+        //draw the outline of the room
         page.setColor(Color.white);
         page.drawLine (startingX+increase, startingY+heightIncrease, startingX+width+increase, startingY+heightIncrease); //draw top line
         page.drawLine (startingX+increase, startingY+heightIncrease, startingX+increase, startingY+height+heightIncrease); //draw left line
