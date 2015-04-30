@@ -101,7 +101,7 @@ public class Resident
         isOnElevator = b;
         if (b == true)
         {
-            isOut = true;
+            setIsOut(b);
         }
     }
     
@@ -123,5 +123,10 @@ public class Resident
     public boolean getIsOut()
     {
         return isOut;
+    }
+    
+    public void setIsOut( boolean b )
+    {
+        isOut = b;
     }
 }

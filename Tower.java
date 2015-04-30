@@ -46,7 +46,7 @@ public class Tower extends JPanel
 
         if (budget >= 3)
         {
-            startingFloors = 3;
+            startingFloors = 5;
             startingRooms = 3;
         }
         else if (budget>= 2)
@@ -73,7 +73,7 @@ public class Tower extends JPanel
     {
         boolean residentAdded = false;
         //int row = (int)(Math.random() * rooms.length);
-        int row = 2;
+        int row = 4;
         //int col = (int)(Math.random() * rooms[0].length);
         int col = 0;
         if (rooms[row][col] != null)
@@ -208,15 +208,16 @@ public class Tower extends JPanel
     }
 
     public void moveElevatorUp(Resident r, int row, int col)
+    throws InterruptedException
     {
         Elevator currentElevator = (Elevator)(rooms[row][col]);
+        int maxRow = r.getRoomLocation()[0];
         System.out.println("ROW: " + row);
-        if (row < rooms.length -1)
+        if (row < maxRow)
         {
             if (currentElevator.getOccupation() == false)
             {
                 currentElevator.setMovingUp(true);
-                currentElevator.setColor(r.getColor());
                 Elevator nextElevator = (Elevator) (rooms[row+1][col]);
                 //System.out.println("Next elevator is @ " + (row+1));
                 nextElevator.setColor(r.getColor());
@@ -228,11 +229,12 @@ public class Tower extends JPanel
         {
             if (currentElevator.getOccupation() == false)
             {
+                System.out.println("Row is 0");
                 currentElevator.setMovingUp(true);
-                currentElevator.addOccupant(r); 
-                currentElevator.setColor(r.getColor());
+                currentElevator.addOccupant(r); //this has to happen earlier
+                ((Elevator)(rooms[0][col])).setColor(r.getColor());
+                //currentElevator.setColor(r.getColor());
                 Elevator nextElevator = (Elevator) (rooms[row+1][col]);
-                nextElevator.setColor(r.getColor());
                 currentElevator.transferElevators(nextElevator);
                 currentElevator.setMovingUp(false);
             }
@@ -242,6 +244,7 @@ public class Tower extends JPanel
             currentElevator.removeAllResidents();
             currentElevator.setMovingUp(false);
             r.setOnElevator(false);
+            r.setIsOut(false);
             rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
         }
     }
@@ -273,6 +276,7 @@ public class Tower extends JPanel
                                 if (currentResident.doAction().equals("nothing"))
                                 {
                                     System.out.println(currentResident.getName() + " is hanging out in their room.");
+                                    System.out.println(currentResident.getName() + " has " + currentResident.getStayTime() + " days remaining.");
                                     currentResident.updateStayTime();
                                 }
                                 else if (currentResident.doAction().equals("out") && checkElevator(col+1) == true)
@@ -313,11 +317,12 @@ public class Tower extends JPanel
                     if (checkElevator(r.getRoomLocation()[1] + 1) == true)
                     {
                         System.out.println("Elevator at " + (r.getRoomLocation()[1] + 1) + " is open."); //check the elevator rowcol to the right of the room
-                        for (int step = 0; step < rooms.length; step++) //move the elevator up one space for every floor
+                        for (int step = 0; step < r.getRoomLocation()[0] + 1; step++) //move the elevator up one space for every floor
                         {
-                            containingFrame.repaint();
                             moveElevatorUp(r,step, (r.getRoomLocation()[1]) + 1 ); 
-                            Thread.sleep(300);
+                            containingFrame.repaint();
+                            //moveElevatorDown();
+                            Thread.sleep(100);
                         }
                         awayResidents.set(awayResidents.indexOf(r),null);
                         residentsToBringBack.add(r);

@@ -59,7 +59,7 @@ public class Viewer
             //tower.addResident(); //assuming there is a space open
             //tower.getAwayResidents();
             frame.repaint();
-            Thread.sleep(300);
+            Thread.sleep(100);
         }
     }
 }
