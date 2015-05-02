@@ -73,7 +73,7 @@ public class Tower extends JPanel
     {
         boolean residentAdded = false;
         //int row = (int)(Math.random() * rooms.length);
-        int row = 4;
+        int row = 3;
         //int col = (int)(Math.random() * rooms[0].length);
         int col = 0;
         if (rooms[row][col] != null)
@@ -211,30 +211,24 @@ public class Tower extends JPanel
     throws InterruptedException
     {
         Elevator currentElevator = (Elevator)(rooms[row][col]);
+
         int maxRow = r.getRoomLocation()[0];
+        System.out.println("MAXROW: " + maxRow);
         System.out.println("ROW: " + row);
         if (row < maxRow)
         {
-            if (currentElevator.getOccupation() == false)
+            Elevator nextElevator = (Elevator) (rooms[row+1][col]);
+            if (row == 0)
             {
-                currentElevator.setMovingUp(true);
-                Elevator nextElevator = (Elevator) (rooms[row+1][col]);
-                //System.out.println("Next elevator is @ " + (row+1));
-                nextElevator.setColor(r.getColor());
-                currentElevator.transferElevators(nextElevator);
-                currentElevator.setMovingUp(false);
-            }
-        }
-        else if (row == 0)
-        {
-            if (currentElevator.getOccupation() == false)
-            {
-                System.out.println("Row is 0");
-                currentElevator.setMovingUp(true);
-                currentElevator.addOccupant(r); //this has to happen earlier
+                currentElevator.addOccupant(r);
+                currentElevator.setOccupied(true);
                 ((Elevator)(rooms[0][col])).setColor(r.getColor());
-                //currentElevator.setColor(r.getColor());
-                Elevator nextElevator = (Elevator) (rooms[row+1][col]);
+            }
+            if (nextElevator.getOccupation() == false)
+            {
+                currentElevator.setMovingUp(true);
+                //System.out.println("Next elevator is @ " + (row+1));
+                //nextElevator.setColor(r.getColor());
                 currentElevator.transferElevators(nextElevator);
                 currentElevator.setMovingUp(false);
             }
@@ -308,7 +302,6 @@ public class Tower extends JPanel
                 else
                 {
                     //rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
-                    System.out.println(r.getName() + " is back.");
                     //r.setOnElevator(false);
                     //awayResidents.set(awayResidents.indexOf(r),null);
                     //residentsToBringBack.add(r);
@@ -327,6 +320,7 @@ public class Tower extends JPanel
                         awayResidents.set(awayResidents.indexOf(r),null);
                         residentsToBringBack.add(r);
                     }
+
                 }
             }
         }
@@ -334,6 +328,7 @@ public class Tower extends JPanel
         for (Resident r : residentsToBringBack)
         {
             awayResidents.remove(r);
+            System.out.println(r.getName() + " is back.");
         }
     }
 

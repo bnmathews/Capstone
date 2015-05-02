@@ -18,10 +18,13 @@ public class Elevator extends Room
         //System.out.println(r.getName() + " is on the elevator!");
         occupants.add(r);
         super.setOccupied(true);
+        setColor(r.getColor());
+        /*
         if (occupants.get(occupants.size()-1) != null)
         {
             setColor(occupants.get(occupants.size()-1).getColor());
         }
+        */
     }
     
     public ArrayList<Resident> getAllResidents()
@@ -44,10 +47,13 @@ public class Elevator extends Room
     public void removeAllResidents()
     {
         setColor(defaultColor);
+        /*
         for (int i = 0; i < occupants.size(); i++)
         {
             occupants.remove(i); //remove the current guest from the elevator
         }
+        */
+        occupants.clear();
         setOccupied(false);
     }
     
