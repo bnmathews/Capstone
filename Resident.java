@@ -15,10 +15,26 @@ public class Resident
     private boolean isOut = false;
     private boolean isOnElevator = false;
     private Color color;
-    private String name;
+    
+    // name related stuff
     private String gender;
+    private String name;
     private String[] namePrefix = {"Apple","Bil","Kick","Head","Work","Shell","Rod","Care","Hipp","Flipp","Still","Tru","Happ","Fell","Fist"};
     private String[] nameSuffix = {"long","iam","worker","maker","breaker","age","man","mack","back","land","ings","-Bo","ins","-Millar","beef"};
+    
+    // action related stuff
+    private String action;    
+    private String[] actions = {"exercising","exorcise a demon","praying","playing video games","drinking","dancing",
+                                "hanging out","eating","using the bathroom","working out","pondering life's mysteries",
+                                "making poor decisions","getting advice","loafing","singing","playing music","writing poetry",
+                                "passed out","searching for Bigfoot","playing dead","building a model kit","making cookies","doing squats"};
+                                   
+    private String[] outActions = {"doing odd jobs","at work","working","performing","doing maintenance work","helping out","stopping a robbery",
+                                   "playing pranks on people","on a date","loitering","littering"};
+                                   
+    private String[] outLocations = {"the club","a local bar","their parents' house","their friend's house","the gym","the coffee house","the comedy club",
+                                     "the theatre","the cemetery","the hospital","the office","the public pool","the spookhouse"};
+                                     
     public Resident(int minTimeOut, int maxTimeOut, int roomRow, int roomCol)
     {
         if ( (int) (Math.random() * 2) == 1)
@@ -88,12 +104,41 @@ public class Resident
         Double chance = Math.random() * 100; //decides what the resident will do
         if (chance > 50)
         {
-            return "nothing";
+            action = "nothing";
         }
         else
         {
-            return "out";
+            action = "out";
         }
+        return action;
+    }
+    
+    public String getActionReadout()
+    {
+        String readout = name + " is ";
+        if ( action.equals("out") )
+        {
+            //normally the resident can only do regular actions, but being out of the building gives them the ability to use extra actions as well.
+            
+            String[] actionListToUse;
+            if ((int)Math.random()*2 == 0)
+            {
+                actionListToUse = actions;
+            }
+            else
+            {
+                actionListToUse = outActions;
+            }
+            
+            readout += (actionListToUse[(int)(Math.random()*actionListToUse.length)] + " at " + outLocations[(int)(Math.random()*outLocations.length)]) + ".";
+            
+        }
+        else
+        {
+            readout += (actions[(int)(Math.random()*actions.length)] + " in their room.");
+        }
+        
+        return readout;
     }
     
     public void setOnElevator(boolean b)

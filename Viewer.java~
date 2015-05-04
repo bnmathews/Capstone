@@ -18,6 +18,9 @@ public class Viewer
     private JFrame frame;
     
     private Tower tower;
+    
+    private int frameDelay = 300;
+    
     public static void main(String[] args)
     throws InterruptedException
     {
@@ -47,7 +50,7 @@ public class Viewer
         frame.setSize(WIDTH, HEIGHT);
         frame.add(panel);
         
-        tower = new Tower(frame,0,0,150,300,3,5,10);
+        tower = new Tower(frame,0,0,150,300,3,50,100,frameDelay);
         
         frame.add(tower);
         frame.setVisible(true);
@@ -58,8 +61,14 @@ public class Viewer
             tower.updateResidents();
             tower.addResident(); //assuming there is a space open
             //tower.getAwayResidents();
+            
+            if (tower.checkFull() == true)
+            {
+                tower.extendFloors(tower.getLayoutDims()[0] + 1,tower.getLayoutDims()[1] + 1);
+            }
+            
             frame.repaint();
-            Thread.sleep(100);
+            Thread.sleep(frameDelay);
         }
     }
 }
