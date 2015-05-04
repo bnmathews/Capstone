@@ -384,9 +384,38 @@ public class Tower extends JPanel
             }
         }
         System.out.println("Floors Made");
+        
+        removeNullRooms();
+        
         displayFloors();
-
+        
         return rooms;
+    }
+    
+    public void removeNullRooms() //removes excess null spaces from the rooms 2D array
+    {
+        int nullRoomCount = 0;
+        for (int col = 0; col < rooms[0].length; col++)
+        {
+            if (rooms[0][col] == null)
+            {
+                nullRoomCount++;
+            }
+        }
+        
+        System.out.println(nullRoomCount + " null rooms");
+        
+        Room[][] newRooms = new Room[rooms.length][rooms[0].length - nullRoomCount];
+        
+        for (int row = 0; row < newRooms.length; row++)
+        {
+            for (int col = 0; col < newRooms[row].length; col++)
+            {
+                newRooms[row][col] = rooms[row][col];
+            }
+        }
+        
+        rooms = newRooms;
     }
 
     public void extendFloors(int floorExt, int roomExt) //may or may not be needed
