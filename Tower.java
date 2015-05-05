@@ -34,7 +34,7 @@ public class Tower extends JPanel
     private int elevatorDelay = 3;
 
     private JFrame containingFrame;
-    
+
     private int frameDelay;
 
     public Tower(JFrame frame, int floors,int rooms, int x, int y,int b, int minT, int maxT, int fD)
@@ -72,7 +72,7 @@ public class Tower extends JPanel
         addResident();
         displayResidents();
     }
-    
+
     public boolean checkFull()
     {
         for(int row = 0; row < rooms.length; row++)
@@ -86,14 +86,14 @@ public class Tower extends JPanel
                 }
             }
         }
-        
+
         return true;
     }
 
     public void addResident()
     {
         boolean residentAdded = false;
-        
+
         while(residentAdded == false && checkFull() == false) //we wanna make sure this adds a resident
         {
             int row = (int)(Math.random() * rooms.length);
@@ -111,7 +111,7 @@ public class Tower extends JPanel
                         rooms[row][col].setOccupied(true);
                         rooms[row][col].setColor(r.getColor());
                         residentAdded = true;
-    
+
                         System.out.println(r.getName() 
                             + " is staying in " + rooms[row][col].getName() + " for " 
                             + r.getStayTime() + " days.");
@@ -369,8 +369,8 @@ public class Tower extends JPanel
             }
         }
 
-        int height = rooms.length;
-        int width = rooms[0].length*2;
+        int height = numFloors;
+        int width = numRooms * 2;
 
         for (int row = 0; row < height; row++)
         {
@@ -384,14 +384,14 @@ public class Tower extends JPanel
             }
         }
         System.out.println("Floors Made");
-        
+
         removeNullRooms();
-        
+
         displayFloors();
-        
+
         return rooms;
     }
-    
+
     public void removeNullRooms() //removes excess null spaces from the rooms 2D array
     {
         int nullRoomCount = 0;
@@ -402,11 +402,11 @@ public class Tower extends JPanel
                 nullRoomCount++;
             }
         }
-        
+
         System.out.println(nullRoomCount + " null rooms");
-        
+
         Room[][] newRooms = new Room[rooms.length][rooms[0].length - nullRoomCount];
-        
+
         for (int row = 0; row < newRooms.length; row++)
         {
             for (int col = 0; col < newRooms[row].length; col++)
@@ -414,20 +414,31 @@ public class Tower extends JPanel
                 newRooms[row][col] = rooms[row][col];
             }
         }
-        
+
         rooms = newRooms;
     }
 
     public void extendFloors(int floorExt, int roomExt) //may or may not be needed
     {
-        int newFloors = rooms.length-1 + floorExt;
-        int newRooms = rooms[0].length-1 + roomExt;
-       
+        System.out.println("Rooms: " + rooms[0].length);
+        
+        int newFloors = rooms.length + floorExt;
+        int newRooms = rooms[0].length/2 + roomExt; // divide this by 2 because we want to ignore the elevators
+
+        Room[][] previousRooms = rooms;
         Room[][] newRoomArr = makeFloors(newFloors,newRooms);
+        
+        for (int row = 0; row < previousRooms.length; row++)
+        {
+            for(int col = 0; col < previousRooms[row].length; col++)
+            {
+                newRoomArr[row][col] = previousRooms[row][col];
+            }
+        }
 
         rooms = newRoomArr;
     }
-    
+
     public int[] getLayoutDims()
     {
         return (new int[] {rooms.length,rooms[0].length});
