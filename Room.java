@@ -38,7 +38,17 @@ public class Room
     {
         return height;
     }
+    
+    public void setWidth(int w)
+    {
+        width = w;
+    }
 
+    public void setHeight(int h)
+    {
+        height = h;
+    }
+    
     public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease, JPanel panel)
     {
         int panelWidth = (int)(panel.getWidth() / 7.5);

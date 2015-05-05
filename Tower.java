@@ -421,19 +421,26 @@ public class Tower extends JPanel
     public void extendFloors(int floorExt, int roomExt) //may or may not be needed
     {
         System.out.println("Rooms: " + rooms[0].length);
-        
+
         int newFloors = rooms.length + floorExt;
         int newRooms = rooms[0].length/2 + roomExt; // divide this by 2 because we want to ignore the elevators
 
         Room[][] previousRooms = rooms;
         Room[][] newRoomArr = makeFloors(newFloors,newRooms);
-        
+
         for (int row = 0; row < previousRooms.length; row++)
         {
             for(int col = 0; col < previousRooms[row].length; col++)
             {
                 newRoomArr[row][col] = previousRooms[row][col];
             }
+        }
+
+        for (Object r : newRoomArr)
+        {
+            r.setWidth(r.getWidth()/2);
+            r.setHeight(r.getHeight()/2);
+
         }
 
         rooms = newRoomArr;
