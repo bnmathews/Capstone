@@ -19,7 +19,7 @@ public class Viewer
     
     private Tower tower;
     
-    private int frameDelay = 50;
+    private int frameDelay = 200;
     
     public static void main(String[] args)
     throws InterruptedException

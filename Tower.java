@@ -36,6 +36,8 @@ public class Tower extends JPanel
     private JFrame containingFrame;
 
     private int frameDelay;
+    
+    private int divider = 2;
 
     public Tower(JFrame frame, int floors,int rooms, int x, int y,int b, int minT, int maxT, int fD)
     {
@@ -435,14 +437,35 @@ public class Tower extends JPanel
                 newRoomArr[row][col] = previousRooms[row][col];
             }
         }
-
-        for (Object r : newRoomArr)
+        
+        int maxShrinkTimes = 0;
+        
+        for (Room[] r : newRoomArr)
         {
-            r.setWidth(r.getWidth()/2);
-            r.setHeight(r.getHeight()/2);
-
+            for (Room room : r)
+            {
+                if (room.getShrinkTimes() > maxShrinkTimes)
+                {
+                    maxShrinkTimes = room.getShrinkTimes();
+                }
+            }
         }
 
+        for (Room[] r : newRoomArr)
+        {
+            for (Room room : r)
+            {
+                if (room.getShrinkTimes() < maxShrinkTimes)
+                {
+                    room.setWidth(room.getWidth()/2);
+                    room.setHeight(room.getHeight()/2);
+                    room.incrementShrink();
+                }
+            }
+        }
+
+        divider = divider + 2;
+        
         rooms = newRoomArr;
     }
 
