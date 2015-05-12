@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * Panel
+ * Readout
  * 
  * @author @bnmathews
  * @version 30 March 2015
@@ -528,6 +528,31 @@ public class Tower extends JPanel
             }
             System.out.println();
         }
+    }
+    
+    public ArrayList<Resident> getAllResidents()
+    {
+        ArrayList<Resident> allR = new ArrayList<Resident>();
+        for (int row = 0; row < rooms.length; row++)
+        {
+            for (int col = 0; col < rooms[row].length; col++)
+            {
+                if (rooms[row][col] != null && !rooms[row][col].getType().equals("e"))
+                {
+                    if (rooms[row][col].getOccupation() == true)
+                    {
+                        allR.add(rooms[row][col].getResident());
+                    }
+                }
+            }
+        }
+        
+        for (Resident r : awayResidents)
+        {
+            allR.add(r);
+        }
+        
+        return allR;
     }
 
     public void paintComponent (Graphics page)
