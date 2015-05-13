@@ -16,15 +16,13 @@ public class Viewer
     
     private JPanel panel;
     private JFrame frame;
-    
-    private JPanel panel2;
     private JFrame frame2;
     
     private ResidentReadout readout;
     
     private Tower tower;
     
-    private int frameDelay = 200;
+    private int frameDelay = 1;
     
     public static void main(String[] args)
     throws InterruptedException
@@ -42,26 +40,25 @@ public class Viewer
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
         panel.setBackground(Color.black);
         
-        panel2 = new JPanel();
-        panel2.setLayout(new BoxLayout(panel2,BoxLayout.Y_AXIS));
-        panel2.setBackground(Color.black);
-        
         int b = (int)(Math.random() * 4);
         
         if (b == 0)
             b = 1;
             
         readout = new ResidentReadout();
+        readout.setLayout(new BoxLayout(readout,BoxLayout.Y_AXIS));
            
         frame = new JFrame();
         
         JFrame frame2 = new JFrame();
+        frame2.setSize(WIDTH, HEIGHT);
         
         tower = new Tower(frame,0,0,150,300,3,50,100,frameDelay);
         
         panel.add(tower);
         
-        panel2.add(readout);
+        frame2.add(readout);
+        frame2.setVisible(true);
         
         // create the window itself
         frame.setTitle("Tower");
@@ -70,23 +67,25 @@ public class Viewer
         frame.add(panel);
         frame.setVisible(true);
         
-        frame2.add(panel2);
-        frame2.setVisible(true);
+        
         
         while (keepGoing == true)
         {
-            readout.setResidents(tower.getAllResidents());
             tower.moveElevatorDown();
             tower.updateResidents();
             tower.addResident(); //assuming there is a space open
             //tower.getAwayResidents();
             
+            readout.setResidents(tower.getAllResidents());
+            /*
             if (tower.checkFull() == true)
             {
-                tower.extendFloors(1,1);
+                //tower.extendFloors(1,1);
             }
+            */
             
             frame.repaint();
+            frame2.repaint();
             Thread.sleep(frameDelay);
         }
     }

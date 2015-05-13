@@ -190,7 +190,7 @@ public class Tower extends JPanel
                     open = false;
             }
         }
-        System.out.println(open);
+        //System.out.println(open);
         return open;
     }
 
@@ -287,7 +287,7 @@ public class Tower extends JPanel
                         {
                             if (currentResident.getStayTime() < 1)
                             {
-                                System.out.println(currentResident.getName() + " has moved out!");
+                                //System.out.println(currentResident.getName() + " has moved out!");
                                 currentRoom.setResident(null); //the resident is no longer tied to that room
                                 currentRoom.setColor(new Color(155,155,155));
                                 currentRoom.setOccupied(false); //no one is in the room
@@ -309,7 +309,7 @@ public class Tower extends JPanel
                                     currentElevator.addOccupant(currentResident); 
                                     currentRoom.setColor(currentResident.getColor().darker());
                                 }
-                                System.out.println(currentResident.getActionReadout());
+                                //System.out.println(currentResident.getActionReadout());
                             }
                         }
                     }
@@ -355,7 +355,7 @@ public class Tower extends JPanel
         for (Resident r : residentsToBringBack)
         {
             awayResidents.remove(r);
-            System.out.println(r.getName() + " is back.");
+            //System.out.println(r.getName() + " is back.");
         }
     }
 
@@ -385,7 +385,7 @@ public class Tower extends JPanel
                 }
             }
         }
-        System.out.println("Floors Made");
+        //System.out.println("Floors Made");
 
         removeNullRooms();
 
@@ -405,7 +405,7 @@ public class Tower extends JPanel
             }
         }
 
-        System.out.println(nullRoomCount + " null rooms");
+        //System.out.println(nullRoomCount + " null rooms");
 
         Room[][] newRooms = new Room[rooms.length][rooms[0].length - nullRoomCount];
 
@@ -422,7 +422,7 @@ public class Tower extends JPanel
 
     public void extendFloors(int floorExt, int roomExt) //may or may not be needed
     {
-        System.out.println("Rooms: " + rooms[0].length);
+        //System.out.println("Rooms: " + rooms[0].length);
 
         int newFloors = rooms.length + floorExt;
         int newRooms = rooms[0].length/2 + roomExt; // divide this by 2 because we want to ignore the elevators
