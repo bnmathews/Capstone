@@ -549,7 +549,10 @@ public class Tower extends JPanel
         
         for (Resident r : awayResidents)
         {
-            allR.add(r);
+            if(r!= null)
+            {
+                allR.add(r);
+            }
         }
         
         return allR;

@@ -22,13 +22,7 @@ public class Viewer
     
     private Tower tower;
     
-    private int frameDelay = 1;
-    
-    public static void main(String[] args)
-    throws InterruptedException
-    {
-        Viewer viewer = new Viewer();
-    }
+    private int frameDelay = 11;
     
     public Viewer()
     throws InterruptedException
@@ -53,7 +47,7 @@ public class Viewer
         JFrame frame2 = new JFrame();
         frame2.setSize(WIDTH, HEIGHT);
         
-        tower = new Tower(frame,0,0,150,300,3,50,100,frameDelay);
+        tower = new Tower(frame,0,0,150,300,3,20,50,frameDelay);
         
         panel.add(tower);
         
@@ -88,5 +82,11 @@ public class Viewer
             frame2.repaint();
             Thread.sleep(frameDelay);
         }
+    }
+    
+    public static void main(String[] args)
+    throws InterruptedException
+    {
+        Viewer viewer = new Viewer();
     }
 }

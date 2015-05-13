@@ -47,8 +47,7 @@ public class ResidentReadout extends JPanel
 
         public void updateText()
         {
-            //setText(myResident.getActionReadout());
-            this.setText("AAA");
+            setText(myResident.getActionReadout());
         }
     }
 
@@ -94,9 +93,9 @@ public class ResidentReadout extends JPanel
 
         for (Resident r : myResidents)
         {
-            if (labeledResidents.indexOf(r) == -1)
+            if (labeledResidents.indexOf(r) == -1) //check if the resident needs a label
             { 
-                rLabel rL = new rLabel();
+                rLabel rL = new rLabel(); //set up a new label for the current resident
                 rL.setResident(r);
                 residentLabels.add(rL);
             }
@@ -104,12 +103,23 @@ public class ResidentReadout extends JPanel
 
         for (rLabel r : residentLabels)
         {
-            if (!r.getAdded())
-            {
-                r.setAdded(true);
-                add(r);
-            }
             r.updateText();
+            if (!r.getAdded()) //check if there is already a label on screen
+            {
+                //if not, add the current label to the screen
+                r.setAdded(true); 
+                add(r);
+                
+            }
+            else
+            {
+                // check if the resident is no longer in the building
+                if (myResidents.indexOf(r.getResident()) == -1)
+                {
+                    remove(r);
+                }
+            }
+            
         }
     }
 }
