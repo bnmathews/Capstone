@@ -8,7 +8,6 @@ public class Room
     private Color myColor = new Color(155,155,155);
     private Resident resident;
     private boolean isOccupied = false;
-    private int shrinkTimes = 0;
     private int width = 30;
     private int height = 30;
     public Room(String n)
@@ -23,16 +22,6 @@ public class Room
         type = t;
         width = w;
         height = h;
-    }
-    
-    public void incrementShrink()
-    {
-        shrinkTimes++;
-    }
-    
-    public int getShrinkTimes()
-    {
-        return shrinkTimes;
     }
     
     public void setColor(Color c)

@@ -21,7 +21,7 @@ public class Resident
     // name related stuff
     private String gender;
     private String name;
-    private String previousAction = "N/A";
+    private String previousReadout = "N/A";
     private String[] namePrefix = {"Apple","Bil","Kick","Head","Work","Shell","Rod","Care","Hipp","Flipp","Still","Tru","Happ","Fell","Fist"};
     private String[] nameSuffix = {"long","iam","worker","maker","breaker","age","man","mack","back","land","ings","-Bo","ins","-Millar","beef"};
 
@@ -87,7 +87,7 @@ public class Resident
     public void makeColor()
     {
         Random r = new Random();
-        color = new Color(r.nextFloat(),r.nextFloat(),r.nextFloat());
+        color = new Color(r.nextInt((255 - 70) + 1) + 70,r.nextInt((255 - 70) + 1) + 70,r.nextInt((255 - 70) + 1) + 70);
     }
 
     public Color getColor()
@@ -112,72 +112,67 @@ public class Resident
         }
         else
         {
-            action = "out";
+            action = "out"; //NOTE: this only sends the request for leaving, if the Resident can't go out, it resets
         }
-        
-        if (!action.equals(previousAction))
-        {
-            previousAction = action;
-            actionIsChanged = true;
-        }
-        else
-        {
-            actionIsChanged = false;
-        }
-        
+
         setActionReadout();
-        
+
         return action;
     }
 
     public void setActionReadout()
     {
         String readout = name + " is ";
-        
-        if ( action.equals("out") )
+
+        if (action.equals("out"))
         {
-            if (isOut == true) // check to make sure if the Resident requested to leave the building and they have actually left
+            if (isOut == true)
             {
-                //normally the resident can only do regular actions, but being out of the building gives them the ability to use extra actions as well.
-    
-                String[] actionListToUse;
-                if ((int)Math.random()*2 == 0)
+                if (action.equals("out")) // check to make sure if the Resident requested to leave the building and they have actually left
                 {
-                    actionListToUse = actions;
+                    //normally the resident can only do regular actions, but being out of the building gives them the ability to use extra actions as well.
+
+                    String[] actionListToUse;
+                    if ((int)Math.random()*2 == 0)
+                    {
+                        actionListToUse = actions;
+                    }
+                    else
+                    {
+                        actionListToUse = outActions;
+                    }
+
+                    readout += (actionListToUse[(int)(Math.random()*actionListToUse.length)] + " at " + outLocations[(int)(Math.random()*outLocations.length)]) + ".";
                 }
-                else
-                {
-                    actionListToUse = outActions;
-                }
-    
-                readout += (actionListToUse[(int)(Math.random()*actionListToUse.length)] + " at " + outLocations[(int)(Math.random()*outLocations.length)]) + ".";
             }
             else
             {
-                if (action.equals(previousAction))
+                if (previousReadout.equals("N/A"))
                 {
-                    readout += (actions[(int)(Math.random()*actions.length)] + " in their room.");        
+                    readout += (actions[(int)(Math.random()*actions.length)] + " in their room.");
+                    previousReadout = readout;
                 }
                 else
                 {
-                    readout = "AAA";
+                    readout = previousReadout;
                 }
             }
         }
         else
         {
-            if (action.equals(previousAction))
+            if (previousReadout.equals("N/A"))
             {
-                readout += (actions[(int)(Math.random()*actions.length)] + " in their room.");        
+                readout += (actions[(int)(Math.random()*actions.length)] + " in their room.");
+                previousReadout = readout;
             }
             else
             {
-                readout = "AAA";
+                readout = previousReadout;
             }
         }
-        
+
         actionReadout = readout;
-        
+
         if (isOffBuilding == false)
         {
             if (isOnElevator)
@@ -187,6 +182,11 @@ public class Resident
         }
     }
     
+    public void resetPreviousReadout()
+    {
+        previousReadout = "N/A";
+    }
+
     public void setOffBuilding(boolean b)
     {
         isOffBuilding = b;

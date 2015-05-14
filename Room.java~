@@ -8,6 +8,8 @@ public class Room
     private Color myColor = new Color(155,155,155);
     private Resident resident;
     private boolean isOccupied = false;
+    public static int global_width = 30;
+    public static int global_height = 30;
     private int width = 30;
     private int height = 30;
     public Room(String n)
@@ -23,7 +25,7 @@ public class Room
         width = w;
         height = h;
     }
-
+    
     public void setColor(Color c)
     {
         myColor = c;
@@ -38,14 +40,21 @@ public class Room
     {
         return height;
     }
+    
+    public void setWidth(int w)
+    {
+        width = w;
+    }
 
+    public void setHeight(int h)
+    {
+        height = h;
+    }
+    
     public void constructRoom(Graphics page, int startingX, int startingY, int increase, int heightIncrease, JPanel panel)
     {
         int panelWidth = (int)(panel.getWidth() / 7.5);
         int panelHeight = (int)(panel.getHeight() / 7.5);
-        
-        width = panelWidth - width;
-        height = panelHeight;
         
         //draw the room
         page.setColor(myColor);

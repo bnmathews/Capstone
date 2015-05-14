@@ -4,10 +4,10 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * Readout
+ * Resident Readout
  * 
  * @author @bnmathews
- * @version 30 March 2015
+ * @version 14 May 2015
  */
 public class ResidentReadout extends JPanel
 {
@@ -18,6 +18,8 @@ public class ResidentReadout extends JPanel
         private Resident myResident;
 
         private boolean isAdded = false;
+        
+        private boolean shouldRemove = false;
 
         public rLabel()
         {
@@ -49,9 +51,19 @@ public class ResidentReadout extends JPanel
         {
             setText(myResident.getActionReadout());
         }
+        
+        public void setRemove()
+        {
+            shouldRemove = true;
+        }
+        
+        public boolean getRemove()
+        {
+            return shouldRemove;
+        }
     }
 
-    // the dimensions of the Tree Panel
+    // the dimensions of the readout Panel
     private final int PANEL_WIDTH = 1000;
     private final int PANEL_HEIGHT = 1000;
 
@@ -62,27 +74,16 @@ public class ResidentReadout extends JPanel
     public ResidentReadout()
     {
         setBackground (Color.black);
-        //this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
     }
 
     public void setResidents(ArrayList<Resident> r)
     {
         myResidents = r;
-        //this.setText(myResidents.get(0).getName()+"\nMORE RESIDENTS");
     }
 
     public void paintComponent (Graphics page)
     {
         super.paintComponent(page);
-        /*
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setLineWrap(true);
-        textArea.setOpaque(false);
-        textArea.setForeground(Color.white);
-        textArea.setText("AAA");
-        add(textArea, BorderLayout.CENTER);
-         */
 
         ArrayList<Resident> labeledResidents = new ArrayList<Resident>();
 
@@ -111,7 +112,7 @@ public class ResidentReadout extends JPanel
             }
             else
             {
-                // check if the resident is no longer in the building
+                // check if the resident is no longer in the building, and thus no longer on our list
                 if (myResidents.indexOf(r.getResident()) == -1)
                 {
                     remove(r);

@@ -25,8 +25,6 @@ public class Tower extends JPanel
     private int startingX;
     private int startingY;
 
-    private int budget;
-
     private Room[][] rooms;
 
     private ArrayList<Resident> awayResidents = new ArrayList<Resident>();
@@ -38,34 +36,19 @@ public class Tower extends JPanel
     private JFrame readoutFrame;
 
     private int frameDelay;
-    
+
     private int divider = 2;
 
-    public Tower(JFrame frame, JFrame rFrame, int floors,int rooms, int x, int y,int b, int minT, int maxT, int fD)
+    public Tower(JFrame frame, JFrame rFrame, int floors, int rooms, int x, int y,int minT, int maxT, int fD)
     {
         containingFrame = frame;
         readoutFrame = rFrame;
 
         res_minTimeOut = minT;
         res_maxTimeOut = maxT;
-
-        budget = b;
-
-        if (budget >= 3)
-        {
-            startingFloors = 8;
-            startingRooms = 1;
-        }
-        else if (budget>= 2)
-        {
-            startingFloors = 2;
-            startingRooms = 2;
-        }
-        else
-        {
-            startingFloors = 1;
-            startingRooms = 2;
-        }
+        
+        startingFloors = floors;
+        startingRooms = rooms;
 
         startingX = x;
         startingY = y;
@@ -75,7 +58,6 @@ public class Tower extends JPanel
         setBackground(Color.black);
         makeFloors(startingFloors,startingRooms);
         addResident();
-        displayResidents();
     }
 
     public boolean checkFull()
@@ -102,9 +84,7 @@ public class Tower extends JPanel
         while(residentAdded == false && checkFull() == false) //we wanna make sure this adds a resident
         {
             int row = (int)(Math.random() * rooms.length);
-            //int row =0;
             int col = (int)(Math.random() * rooms[0].length);
-            //int col = 0;
             if (rooms[row][col] != null)
             {
                 if (rooms[row][col].getOccupation() == false && ( !rooms[row][col].getType().equals("e")))
@@ -137,13 +117,13 @@ public class Tower extends JPanel
                 {
                     if (!currentRoom.getType().equals("e") && currentRoom.getResident() != null)
                     {
-                        //System.out.println(currentRoom.getResident().getName() 
-                        //    + " is staying in " + currentRoom.getName() + " for " 
-                        //    + currentRoom.getResident().getStayTime() + " days.");
+                        System.out.println(currentRoom.getResident().getName() 
+                            + " is staying in " + currentRoom.getName() + " for " 
+                            + currentRoom.getResident().getStayTime() + " days.");
                     }
                     else if (!rooms[row][col].getType().equals("e"))
                     {
-                        //System.out.println("Nobody is staying in " + rooms[row][col].getName());
+                        System.out.println("Nobody is staying in " + rooms[row][col].getName());
                     }
                 }
             }
@@ -193,7 +173,6 @@ public class Tower extends JPanel
                     open = false;
             }
         }
-        //System.out.println(open);
         return open;
     }
 
@@ -244,9 +223,8 @@ public class Tower extends JPanel
     {
         Elevator currentElevator = (Elevator)(rooms[row][col]);
         int maxRow = r.getRoomLocation()[0];
-        //System.out.println("MAXROW: " + maxRow);
-        //System.out.println("ROW: " + row);
         r.setOffBuilding(false);
+        r.setActionReadout();
         if (row < maxRow)
         {
             Elevator nextElevator = (Elevator) (rooms[row+1][col]);
@@ -270,6 +248,7 @@ public class Tower extends JPanel
             r.setOnElevator(false);
             r.setIsOut(false);
             r.setOffBuilding(false);
+            r.resetPreviousReadout();
             rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
         }
     }
@@ -291,7 +270,6 @@ public class Tower extends JPanel
                         {
                             if (currentResident.getStayTime() < 1)
                             {
-                                //System.out.println(currentResident.getName() + " has moved out!");
                                 currentRoom.setResident(null); //the resident is no longer tied to that room
                                 currentRoom.setColor(new Color(155,155,155));
                                 currentRoom.setOccupied(false); //no one is in the room
@@ -300,20 +278,16 @@ public class Tower extends JPanel
                             {
                                 if (currentResident.doAction().equals("nothing"))
                                 {
-                                    //System.out.println(currentResident.getName() + " is hanging out in their room.");
-                                    //System.out.println(currentResident.getName() + " has " + currentResident.getStayTime() + " days remaining.");
                                     currentResident.updateStayTime();
                                 }
                                 else if (currentResident.doAction().equals("out") && checkElevator(col+1) == true)
                                 {
                                     Room currentElevatorRoom = rooms[getNearestElevator(row,col)[0]][getNearestElevator(row,col)[1]]; //find the most convenient elevator to the current room
                                     Elevator currentElevator = (Elevator)(currentElevatorRoom);
-                                    //System.out.println(currentResident.getName() + " will leave for a while.");
                                     currentResident.setOnElevator(true);
                                     currentElevator.addOccupant(currentResident); 
                                     currentRoom.setColor(currentResident.getColor().darker());
                                 }
-                                //System.out.println(currentResident.getActionReadout());
                             }
                         }
                     }
@@ -333,20 +307,14 @@ public class Tower extends JPanel
                 }
                 else //if the resident's time is up, bring them back to the building
                 {
-                    //rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
-                    //r.setOnElevator(false);
-                    //awayResidents.set(awayResidents.indexOf(r),null);
-                    //residentsToBringBack.add(r);
-
-                    //System.out.println("Checking if the elevator is clear...");
                     if (checkElevator(r.getRoomLocation()[1] + 1) == true)
                     {
                         //System.out.println("Elevator at " + (r.getRoomLocation()[1] + 1) + " is open."); //check the elevator rowcol to the right of the room
                         for (int step = 0; step < r.getRoomLocation()[0] + 1; step++) //move the elevator up one space for every floor
                         {
                             moveElevatorUp(r,step, (r.getRoomLocation()[1]) + 1 ); 
-                            containingFrame.repaint();
                             readoutFrame.repaint();
+                            containingFrame.repaint();
                             Thread.sleep(frameDelay);
                         }
                         awayResidents.set(awayResidents.indexOf(r),null);
@@ -360,7 +328,6 @@ public class Tower extends JPanel
         for (Resident r : residentsToBringBack)
         {
             awayResidents.remove(r);
-            //System.out.println(r.getName() + " is back.");
         }
     }
 
@@ -390,12 +357,8 @@ public class Tower extends JPanel
                 }
             }
         }
-        //System.out.println("Floors Made");
 
         removeNullRooms();
-
-        displayFloors();
-
         return rooms;
     }
 
@@ -410,8 +373,6 @@ public class Tower extends JPanel
             }
         }
 
-        //System.out.println(nullRoomCount + " null rooms");
-
         Room[][] newRooms = new Room[rooms.length][rooms[0].length - nullRoomCount];
 
         for (int row = 0; row < newRooms.length; row++)
@@ -425,13 +386,11 @@ public class Tower extends JPanel
         rooms = newRooms;
     }
 
-    public void extendFloors(int floorExt, int roomExt) //may or may not be needed
+    public void extendFloors(int floorExt, int roomExt)
     {
-        //System.out.println("Rooms: " + rooms[0].length);
-
         int newFloors = rooms.length + floorExt;
         int newRooms = rooms[0].length/2 + roomExt; // divide this by 2 because we want to ignore the elevators
-
+        
         Room[][] previousRooms = rooms;
         Room[][] newRoomArr = makeFloors(newFloors,newRooms);
 
@@ -442,34 +401,6 @@ public class Tower extends JPanel
                 newRoomArr[row][col] = previousRooms[row][col];
             }
         }
-        
-        int maxShrinkTimes = 0;
-        
-        for (Room[] r : newRoomArr)
-        {
-            for (Room room : r)
-            {
-                if (room.getShrinkTimes() > maxShrinkTimes)
-                {
-                    maxShrinkTimes = room.getShrinkTimes();
-                }
-            }
-        }
-
-        for (Room[] r : newRoomArr)
-        {
-            for (Room room : r)
-            {
-                if (room.getShrinkTimes() < maxShrinkTimes)
-                {
-                    room.setWidth(room.getWidth()/2);
-                    room.setHeight(room.getHeight()/2);
-                    room.incrementShrink();
-                }
-            }
-        }
-
-        divider = divider + 2;
         
         rooms = newRoomArr;
     }
@@ -534,7 +465,7 @@ public class Tower extends JPanel
             System.out.println();
         }
     }
-    
+
     public ArrayList<Resident> getAllResidents()
     {
         ArrayList<Resident> allR = new ArrayList<Resident>();
@@ -551,15 +482,6 @@ public class Tower extends JPanel
                 }
             }
         }
-        
-        //for (Resident r : awayResidents)
-        //{
-        //    if(r!= null)
-        //    {
-        //        allR.add(r);
-        //    }
-        //}
-        
         return allR;
     }
 
