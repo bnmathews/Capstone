@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=frame\ floors\ rooms\ x\ y\ b\ minT\ maxT\ fD
-comment0.target=Tower(javax.swing.JFrame,\ int,\ int,\ int,\ int,\ int,\ int,\ int,\ int)
+comment0.params=frame\ rFrame\ floors\ rooms\ x\ y\ b\ minT\ maxT\ fD
+comment0.target=Tower(javax.swing.JFrame,\ javax.swing.JFrame,\ int,\ int,\ int,\ int,\ int,\ int,\ int,\ int)
 comment1.params=
 comment1.target=boolean\ checkFull()
 comment10.params=numFloors\ numRooms

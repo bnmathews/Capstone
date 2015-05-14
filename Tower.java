@@ -35,13 +35,16 @@ public class Tower extends JPanel
 
     private JFrame containingFrame;
 
+    private JFrame readoutFrame;
+
     private int frameDelay;
     
     private int divider = 2;
 
-    public Tower(JFrame frame, int floors,int rooms, int x, int y,int b, int minT, int maxT, int fD)
+    public Tower(JFrame frame, JFrame rFrame, int floors,int rooms, int x, int y,int b, int minT, int maxT, int fD)
     {
         containingFrame = frame;
+        readoutFrame = rFrame;
 
         res_minTimeOut = minT;
         res_maxTimeOut = maxT;
@@ -50,8 +53,8 @@ public class Tower extends JPanel
 
         if (budget >= 3)
         {
-            startingFloors = 2;
-            startingRooms = 2;
+            startingFloors = 8;
+            startingRooms = 1;
         }
         else if (budget>= 2)
         {
@@ -114,9 +117,9 @@ public class Tower extends JPanel
                         rooms[row][col].setColor(r.getColor());
                         residentAdded = true;
 
-                        System.out.println(r.getName() 
-                            + " is staying in " + rooms[row][col].getName() + " for " 
-                            + r.getStayTime() + " days.");
+                        //System.out.println(r.getName() 
+                        //    + " is staying in " + rooms[row][col].getName() + " for " 
+                        //    + r.getStayTime() + " days.");
                     }
                 }
             }
@@ -221,6 +224,8 @@ public class Tower extends JPanel
                             for (Resident r : currentElevator.getAllResidents())
                             {
                                 awayResidents.add(r); //the residents are leaving the elevator, and leaving the building.
+                                r.setOffBuilding(true);
+                                r.setActionReadout();
                                 if (r != null)
                                 {
                                     r.resetTimeOut();
@@ -238,10 +243,11 @@ public class Tower extends JPanel
     throws InterruptedException
     {
         Elevator currentElevator = (Elevator)(rooms[row][col]);
-
         int maxRow = r.getRoomLocation()[0];
         //System.out.println("MAXROW: " + maxRow);
         //System.out.println("ROW: " + row);
+        r.setOffBuilding(false);
+        r.setActionReadout();
         if (row < maxRow)
         {
             Elevator nextElevator = (Elevator) (rooms[row+1][col]);
@@ -254,8 +260,6 @@ public class Tower extends JPanel
             if (nextElevator.getOccupation() == false)
             {
                 currentElevator.setMovingUp(true);
-                //System.out.println("Next elevator is @ " + (row+1));
-                //nextElevator.setColor(r.getColor());
                 currentElevator.transferElevators(nextElevator);
                 currentElevator.setMovingUp(false);
             }
@@ -266,6 +270,7 @@ public class Tower extends JPanel
             currentElevator.setMovingUp(false);
             r.setOnElevator(false);
             r.setIsOut(false);
+            r.setOffBuilding(false);
             rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
         }
     }
@@ -323,11 +328,11 @@ public class Tower extends JPanel
         {
             if (r != null) 
             {
-                if (r.getTimeOut() > 0)
+                if (r.getTimeOut() > 0) //if the resident still has time to spend-off building, decrease their time
                 {
                     r.decreaseTimeOut();
                 }
-                else
+                else //if the resident's time is up, bring them back to the building
                 {
                     //rooms[r.getRoomLocation()[0]][r.getRoomLocation()[1]].setColor(r.getColor());
                     //r.setOnElevator(false);
@@ -341,6 +346,7 @@ public class Tower extends JPanel
                         for (int step = 0; step < r.getRoomLocation()[0] + 1; step++) //move the elevator up one space for every floor
                         {
                             moveElevatorUp(r,step, (r.getRoomLocation()[1]) + 1 ); 
+                            readoutFrame.repaint();
                             containingFrame.repaint();
                             Thread.sleep(frameDelay);
                         }
@@ -547,13 +553,13 @@ public class Tower extends JPanel
             }
         }
         
-        for (Resident r : awayResidents)
-        {
-            if(r!= null)
-            {
-                allR.add(r);
-            }
-        }
+        //for (Resident r : awayResidents)
+        //{
+        //    if(r!= null)
+        //    {
+        //        allR.add(r);
+        //    }
+        //}
         
         return allR;
     }

@@ -93,7 +93,7 @@ public class ResidentReadout extends JPanel
 
         for (Resident r : myResidents)
         {
-            if (labeledResidents.indexOf(r) == -1) //check if the resident needs a label
+            if (labeledResidents.indexOf(r) == -1 && r != null) //check if the resident needs a label
             { 
                 rLabel rL = new rLabel(); //set up a new label for the current resident
                 rL.setResident(r);
@@ -106,10 +106,8 @@ public class ResidentReadout extends JPanel
             r.updateText();
             if (!r.getAdded()) //check if there is already a label on screen
             {
-                //if not, add the current label to the screen
                 r.setAdded(true); 
                 add(r);
-                
             }
             else
             {
