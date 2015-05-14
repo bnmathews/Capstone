@@ -28,16 +28,16 @@ public class Viewer
     private int frameDelay = 200;
     
     // the X position where the bottom left of the tower will be horizontally
-    private int startingX = 70;
+    private int startingX = 120;
     
     // the Y position where the bottom left of the tower will be vertically
     private int startingY = 300;
     
     // amount of floors (rows) to give the tower
-    private int startingFloors = 7;
+    private int startingFloors = 5;
     
     // amount of rooms (columns) to give the tower
-    private int startingRooms = 7;
+    private int startingRooms = 5;
     
     // minimum amount of time (ms) a resident should spend out of the building
     private int res_minTimeOut = 30;
