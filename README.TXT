@@ -13,6 +13,11 @@ HOW TO START THIS PROJECT: Run the main method of the "Viewer" class, no further
 
 AUTHORS: Ben Mathews
 
+--DEMONSTRATES--
+
+This program demonstrates complex array useage and class dependency, and how multiple classes can dynamically interact with one another based on outside factors.
+It also includes a GUI to display class data - either as 2D Graphics, or a simple text display. Some basic AI implementation is also present, mainly based off 
+of randomly generated values - very simple stuff, but the program will alter itself on its own without user interaction.
 
 --USER INSTRUCTIONS--
 
