@@ -2,8 +2,10 @@ import java.util.Random;
 import java.awt.*;
 public class Resident
 {
-    private int money;
+    private int chanceIndex;
+    
     private int timeToStay;
+    private int maxTimeToStay;
 
     private int minTimeOut;
     private int maxTimeOut;
@@ -39,7 +41,7 @@ public class Resident
     private String[] outLocations = {"the club","a local bar","their parents' house","their friend's house","the gym","the coffee house","the comedy club",
             "the theatre","the cemetery","the hospital","the office","the public pool","the spookhouse"};
 
-    public Resident(int minTimeOut, int maxTimeOut, int roomRow, int roomCol)
+    public Resident(int cI, int maxTimeToStay, int minTimeOut, int maxTimeOut, int roomRow, int roomCol)
     {
         if ( (int) (Math.random() * 2) == 1)
             gender = "Mr. ";
@@ -52,7 +54,7 @@ public class Resident
         }
         name = gender + namePrefix[ (int) (Math.random()*namePrefix.length) ] + nameSuffix[ (int) (Math.random()*nameSuffix.length) ];
 
-        timeToStay = (int)(Math.random() * 30) + 1;
+        timeToStay = (int)(Math.random() * maxTimeToStay) + 1;
 
         this.minTimeOut = minTimeOut;
         this.maxTimeOut = maxTimeOut;
@@ -60,6 +62,8 @@ public class Resident
         roomLocation[0] = roomRow;
         roomLocation[1] = roomCol;
 
+        chanceIndex = cI;
+        
         makeColor();
     }
 
@@ -105,8 +109,8 @@ public class Resident
 
     public String doAction()
     {
-        Double chance = Math.random() * 100; //decides what the resident will do
-        if (chance > 50)
+        Double chance = Math.random() * chanceIndex; //decides what the resident will do
+        if (chance > (chanceIndex / 2))
         {
             action = "nothing";
         }

@@ -11,6 +11,16 @@ import java.util.ArrayList;
  */
 public class ResidentReadout extends JPanel
 {
+    
+    // the dimensions of the readout Panel
+    private final int PANEL_WIDTH = 1000;
+    private final int PANEL_HEIGHT = 1000;
+
+    private ArrayList<Resident> myResidents = new ArrayList<Resident>();
+
+    private ArrayList<rLabel> residentLabels = new ArrayList<rLabel>();
+    
+    
     private class rLabel extends JLabel
     {
         private ArrayList<Resident> myResidents = new ArrayList<Resident>();
@@ -62,14 +72,6 @@ public class ResidentReadout extends JPanel
             return shouldRemove;
         }
     }
-
-    // the dimensions of the readout Panel
-    private final int PANEL_WIDTH = 1000;
-    private final int PANEL_HEIGHT = 1000;
-
-    private ArrayList<Resident> myResidents = new ArrayList<Resident>();
-
-    private ArrayList<rLabel> residentLabels = new ArrayList<rLabel>();
 
     public ResidentReadout()
     {

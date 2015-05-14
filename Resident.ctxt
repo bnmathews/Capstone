@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=minTimeOut\ maxTimeOut\ roomRow\ roomCol
-comment0.target=Resident(int,\ int,\ int,\ int)
+comment0.params=cI\ maxTimeToStay\ minTimeOut\ maxTimeOut\ roomRow\ roomCol
+comment0.target=Resident(int,\ int,\ int,\ int,\ int,\ int)
 comment1.params=
 comment1.target=int[]\ getRoomLocation()
 comment10.params=

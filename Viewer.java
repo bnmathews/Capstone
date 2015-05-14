@@ -25,10 +25,10 @@ public class Viewer
     private Tower tower;
     
     // the amount of time (ms) taken in between frames
-    private int frameDelay = 300;
+    private int frameDelay = 200;
     
     // the X position where the bottom left of the tower will be horizontally
-    private int startingX = 150;
+    private int startingX = 70;
     
     // the Y position where the bottom left of the tower will be vertically
     private int startingY = 300;
@@ -40,10 +40,18 @@ public class Viewer
     private int startingRooms = 7;
     
     // minimum amount of time (ms) a resident should spend out of the building
-    private int res_minTimeOut = 20;
+    private int res_minTimeOut = 30;
     
     // maximum amount of time (ms) a resident should spend out of the building
     private int res_maxTimeOut = 50;
+    
+    // used to determine how often a resident will go out or stay in, based on a calculation of this number divided by 2 - a larger number means the residents are more likely
+    // to leave the building for a while
+    private int res_chanceIndex = 100;
+   
+    // maximum amount of time (random from 1 to the below number) a resident will stay in the building for, this is updated every time a resident performs
+    // an action - a low number here will mean the residents will move out very fast
+    private int res_maxTimeToStay = 30;
     
     public Viewer()
     throws InterruptedException
@@ -67,7 +75,7 @@ public class Viewer
         frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame2.setSize(400, 500);
         
-        tower = new Tower(frame,frame2,startingFloors,startingRooms,startingX,startingY,res_minTimeOut,res_maxTimeOut,frameDelay);
+        tower = new Tower(frame,frame2,startingFloors,startingRooms,startingX,startingY,res_minTimeOut,res_maxTimeOut,res_maxTimeToStay,res_chanceIndex,frameDelay);
         
         panel.add(tower);
         

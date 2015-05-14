@@ -18,6 +18,8 @@ public class Tower extends JPanel
     //resident variables
     private int res_minTimeOut;
     private int res_maxTimeOut;
+    private int res_maxTimeToStay;
+    private int res_chanceIndex;
 
     private int startingFloors;
     private int startingRooms;
@@ -39,13 +41,15 @@ public class Tower extends JPanel
 
     private int divider = 2;
 
-    public Tower(JFrame frame, JFrame rFrame, int floors, int rooms, int x, int y,int minT, int maxT, int fD)
+    public Tower(JFrame frame, JFrame rFrame, int floors, int rooms, int x, int y,int minT, int maxT, int maxS, int cI, int fD)
     {
         containingFrame = frame;
         readoutFrame = rFrame;
 
         res_minTimeOut = minT;
         res_maxTimeOut = maxT;
+        res_maxTimeToStay = maxS;
+        res_chanceIndex = cI;
         
         startingFloors = floors;
         startingRooms = rooms;
@@ -91,7 +95,7 @@ public class Tower extends JPanel
                 {
                     if (residentAdded == false)
                     {
-                        Resident r = new Resident(res_minTimeOut,res_maxTimeOut,row,col);
+                        Resident r = new Resident(res_maxTimeToStay,res_minTimeOut,res_maxTimeOut,row,col);
                         rooms[row][col].setResident(r);
                         rooms[row][col].setOccupied(true);
                         rooms[row][col].setColor(r.getColor());
@@ -359,6 +363,7 @@ public class Tower extends JPanel
         }
 
         removeNullRooms();
+        
         return rooms;
     }
 
